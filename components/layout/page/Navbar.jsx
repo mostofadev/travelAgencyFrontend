@@ -12,15 +12,15 @@ export default function Navbar() {
   const closeMenu = () => setIsMenuOpen(false);
 
   const menuItems = [
-    { name: "Home", href: "#home" },
-    { name: "About", href: "#about" },
-    { name: "Visa", href: "#visa" },
-    { name: "Flight", href: "#flight" },
-    { name: "Package", href: "#package" },
+    { name: "Home", href: "/" },
+    { name: "About", href: "/about" },
+    { name: "Visa", href: "/visa" },
+    { name: "Flight", href: "/flight" },
+    { name: "Package", href: "/tour" },
   ];
 
   return (
-    <nav className="sticky top-0 z-50 bg-white shadow-md">
+    <nav className="sticky top-0 z-50 bg-white shadow-md px-2">
       <Section>
         <div className="flex items-center justify-between py-4 relative">
           {/* Logo */}
@@ -77,7 +77,7 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         <div
-          className={`fixed top-0 left-0 w-full h-full bg-white z-50 lg:hidden transform transition-transform duration-300 ${
+          className={` fixed top-0 left-0 w-full h-full bg-white z-50 lg:hidden transform transition-transform duration-300 ${
             isMenuOpen ? "translate-x-0" : "-translate-x-full"
           } flex flex-col`}
         >

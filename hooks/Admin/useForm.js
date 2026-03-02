@@ -1,9 +1,12 @@
 // hooks/Admin/useVisaForm.js
 import { useQuery } from "@tanstack/react-query";
 import {
+  AllAircraftsServices,
   AllCountriesServices,
+  AllRouteServices,
   AllVisaTypesServices,
-} from "@/lib/services/Admin/VisaFormServices";
+} from "@/lib/services/Admin/FormServices";
+import { QUERY_KEYS } from "@/lib/react-query/queryKeys";
 
 // ================= Countries =================
 export const useVisaFormCountries = () => {
@@ -19,6 +22,22 @@ export const useVisaFormTypes = () => {
   return useQuery({
     queryKey: ["visa-types"],
     queryFn: AllVisaTypesServices,
+    staleTime: 1000 * 60 * 5,
+  });
+};
+
+export const useAircraftForm = () => {
+  return useQuery({
+    queryKey: QUERY_KEYS.AIRCRAFTS.lists(),
+    queryFn: AllAircraftsServices,
+    staleTime: 1000 * 60 * 5,
+  });
+};
+
+export const useRouteForm = () => {
+  return useQuery({
+    queryKey: QUERY_KEYS.ROUTE.lists(),
+    queryFn: AllRouteServices,
     staleTime: 1000 * 60 * 5,
   });
 };

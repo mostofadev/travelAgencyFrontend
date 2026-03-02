@@ -36,23 +36,18 @@ export function useAuth() {
     },
     onError: (error) => {
       console.log("error dd", error);
-      if (error.status === 401) {
-         showCustomToast({
-          title: "Login Failed",
-          message: "Invalid credentials. Please check your email and password.",
-          type: "error",
-        });
-      }
       const message =
-        error.response?.data?.message ||
-        error.response?.data?.error ||
-        "Login failed. Please try again.";
+        error.status === 401
+          ? "Invalid credentials. Please check your email and password."
+          : error.response?.data?.message ||
+            error.response?.data?.error ||
+            "Login failed. Please try again.";
+
       showCustomToast({
         title: "Login Failed",
-        message: message,
+        message,
         type: "error",
       });
-      //toast.error(message);
     },
   });
 
@@ -72,7 +67,11 @@ export function useAuth() {
       jwtManager.setUserToken(token);
       jwtManager.setUserData(user);
 
-      toast.success("রেজিস্ট্রেশন সফল হয়েছে! 🎉");
+      showCustomToast({
+        title: "Register Successful",
+        message: "You have been register in successfully.",
+        type: "success",
+      });
       queryClient.setQueryData(["user"], user);
 
       router.push("/dashboard");

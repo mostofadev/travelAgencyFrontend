@@ -4,21 +4,19 @@ import DataTable from "@/components/ui/DataTable";
 import { useRouter } from "next/navigation";
 import { TableSkeleton } from "@/components/ui/Skeleton/Skeleton";
 import Link from "next/link";
-import { useAirports, useDeleteAirports } from "@/hooks/Admin/useAirports";
-import { useAircrafts, useDeleteAircrafts } from "@/hooks/Admin/useAircrafts";
+import { useFlightClass, useDeleteFlightClass } from "@/hooks/Admin/useFlightClass";
 
-export default function AircraftsTable() {
+export default function FlightClassTable() {
   const router = useRouter();
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
 
-  // const { data, isLoading, refetch } = useAirports({ page, perPage });
-  const {data,isLoading,refetch} = useAircrafts({page,perPage});
-  const deleteAircrafts = useDeleteAircrafts();
-  console.log('table aircrafts',data);
-  
+  const { data, isLoading, refetch } = useFlightClass({ page, perPage });
+  const deleteFlightClass = useDeleteFlightClass();
+  console.log("table flight class", data);
+
   if (isLoading) {
-    return <TableSkeleton rows={10} columns={6} />;
+    return <TableSkeleton rows={10} columns={7} />;
   }
 
   const paginationInfo = data?.data
@@ -32,30 +30,49 @@ export default function AircraftsTable() {
       }
     : null;
 
- 
   const columns = [
     {
       key: "id",
       label: "ID",
       width: "60px",
     },
-    
     {
-      key: "model",
-      label: "Model",
+      key: "flight",
+      label: "Flight",
+      render: (value) => value?.flight_number || "-",
     },
     {
-      key: "manufacturer",
-      label: "Manufacturer",
+      key: "class_name",
+      label: "Class Name",
     },
     {
-      key: "capacity",
-      label: "Capacity",
+      key: "fare_code",
+      label: "Fare Code",
+    },
+    {
+      key: "base_fare",
+      label: "Base Fare",
+      render: (value, row) =>
+        value ? `${parseFloat(value).toLocaleString()} ${row.currency}` : "-",
+    },
+    {
+      key: "total_seats",
+      label: "Total Seats",
+    },
+    {
+      key: "seats_available",
+      label: "Available / Booked",
+      render: (value, row) => (
+        <span>
+          <span className="text-green-700 font-medium">{value}</span>
+          {" / "}
+          <span className="text-red-600 font-medium">{row.seats_booked}</span>
+        </span>
+      ),
     },
     {
       key: "is_active",
       label: "Status",
-      type: "badge",
       render: (value) => (
         <span
           className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -79,16 +96,16 @@ export default function AircraftsTable() {
   ];
 
   const handleEdit = (item) => {
-    router.push(`/admin/flights/aircrafts/update/${item.id}`);
+    router.push(`/admin/flights/flight-class/update/${item.id}`);
   };
 
   const handleDelete = (item) => {
     if (
       window.confirm(
-        `Are you sure you want to delete "${item.model}"?`
+        `Are you sure you want to delete "${item.class_name} (${item.fare_code})"?`
       )
     ) {
-      deleteAircrafts.mutate(item.id, {
+      deleteFlightClass.mutate(item.id, {
         onSuccess: () => {
           refetch();
         },
@@ -100,13 +117,13 @@ export default function AircraftsTable() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Tour Aircrafts</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Flight Classes</h1>
           <p className="text-gray-500 mt-1">
-            Manage all tour Aircrafts in your system
+            Manage all flight classes in your system
           </p>
         </div>
         <Link
-          href="/admin/flights/aircrafts/create"
+          href="/admin/flights/flight-class/create"
           className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
         >
           <svg
@@ -122,7 +139,7 @@ export default function AircraftsTable() {
               d="M12 4v16m8-8H4"
             />
           </svg>
-          Add New Aircrafts
+          Add New Flight Class
         </Link>
       </div>
 
@@ -136,10 +153,11 @@ export default function AircraftsTable() {
           onRefresh: refetch,
           onEdit: handleEdit,
           onDelete: handleDelete,
-          emptyMessage: "No tour Aircrafts found",
-          searchPlaceholder: "Search by code, title...",
+          emptyMessage: "No flight classes found",
+          searchPlaceholder: "Search by class name, fare code...",
         }}
       />
     </div>
   );
 }
+

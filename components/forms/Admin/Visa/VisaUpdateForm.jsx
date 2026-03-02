@@ -20,7 +20,7 @@ import { useVisa, useUpdateVisa } from "@/hooks/Admin/useVisa";
 import {
   useVisaFormCountries,
   useVisaFormTypes,
-} from "@/hooks/Admin/useVisaFormServices";
+} from "@/hooks/Admin/useFormServices";
 import visaValidationSchema from "@/lib/validations/Admin/visaValidation";
 
 function VisaUpdateForm({ visaId }) {

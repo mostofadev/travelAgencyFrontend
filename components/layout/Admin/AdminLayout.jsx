@@ -113,6 +113,12 @@ export default function AdminLayout({ children }) {
           icon: Plus,
           href: "/admin/flights/create",
         },
+        { name: "All Class", icon: List, href: "/admin/flights/flight-class" },
+        {
+          name: "New Class",
+          icon: Plus,
+          href: "/admin/flights/flight-class",
+        },
       ],
     },
     {

@@ -2,7 +2,7 @@
 const nextConfig = {
   /* config options here */
   images: {
-    domains: ['localhost', 'via.placeholder.com'], // Laravel images serve hostname
+    domains: ['localhost', 'via.placeholder.com','images.unsplash.com','https://images.unsplash.com'], 
   },
 };
 
