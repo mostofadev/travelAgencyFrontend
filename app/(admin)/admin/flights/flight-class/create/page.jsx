@@ -1,8 +1,9 @@
+import FlightClassCreateForm from '@/components/forms/Admin/Flights/FlightClass/FlightClassForm'
 import React from 'react'
 
 function page() {
   return (
-    <div>page</div>
+    <div><FlightClassCreateForm /></div>
   )
 }
 

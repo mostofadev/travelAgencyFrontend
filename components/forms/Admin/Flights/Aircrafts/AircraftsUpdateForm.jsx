@@ -30,7 +30,6 @@ function AircraftsUpdateForm({ Id }) {
       model: "",
       manufacturer: "",
       capacity: "",
-      // is_active: "1",
     },
   });
 
@@ -52,7 +51,6 @@ function AircraftsUpdateForm({ Id }) {
     formData.append("model", data.model);
     formData.append("manufacturer", data.manufacturer);
     formData.append("capacity", data.capacity);
-    // formData.append("is_active", data.is_active);
 
     mutate(
       { id:Id, data: formData },
@@ -129,16 +127,7 @@ function AircraftsUpdateForm({ Id }) {
                 {...register("capacity")}
                 error={errors.capacity?.message}
               />
-              {/* <Select
-                label="Status *"
-                placeholder="Select status"
-                options={[
-                  { value: "1", label: "Active" },
-                  { value: "0", label: "Inactive" },
-                ]}
-                {...register("is_active")}
-                error={errors.is_active?.message}
-              /> */}
+           
             </div>
 
             {/* Actions */}

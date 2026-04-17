@@ -8,7 +8,7 @@ const Radio = forwardRef(
       error,
       helpText,
       options = [],
-      orientation = "horizontal", // horizontal | vertical
+      orientation = "horizontal", 
       className = "",
       ...props
     },

@@ -12,10 +12,8 @@ export default function AircraftsTable() {
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
 
-  // const { data, isLoading, refetch } = useAirports({ page, perPage });
   const {data,isLoading,refetch} = useAircrafts({page,perPage});
   const deleteAircrafts = useDeleteAircrafts();
-  console.log('table aircrafts',data);
   
   if (isLoading) {
     return <TableSkeleton rows={10} columns={6} />;

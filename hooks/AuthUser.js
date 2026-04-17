@@ -6,10 +6,43 @@ import { API_ENDPOINTS } from "@/lib/api/endpoints/endpoints";
 import { jwtManager } from "@/lib/auth/jwt";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { UserLoginServices } from "@/lib/services/AuthServices";
-import CustomToast from "@/components/ui/CustomToast";
+import {
+  UserLoginServices,
+  UserRegisterServices,
+  UserLogoutServices,
+  UserGetMeServices,
+  UserRefreshTokenServices,
+  UserForgotPasswordServices,
+  UserResetPasswordServices,
+} from "@/lib/services/AuthServices";
 import { showCustomToast } from "@/lib/ShowCustomToast";
 
+// ==================== LOGOUT (standalone) ====================
+export const useUserLogout = () => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async () => {
+      try {
+        await UserLogoutServices();
+      } catch (error) {
+      }
+    },
+    onSettled: () => {
+      jwtManager.removeUserToken();
+      queryClient.clear();
+      showCustomToast({
+        type: "error",
+        title: "Success",
+        message: "Logged out successfully.",
+      });
+      router.push("/login");
+    },
+  });
+};
+
+// ==================== MAIN AUTH HOOK ====================
 export function useAuth() {
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -18,24 +51,29 @@ export function useAuth() {
   const loginMutation = useMutation({
     mutationFn: async (credentials) => {
       const { data } = await UserLoginServices(credentials);
-      return data;
+      return { data, redirect: credentials.redirect };
     },
-    onSuccess: (data) => {
+    onSuccess: ({ data, redirect }) => {
       const token = data.access_token;
       const user = data.user;
 
       jwtManager.setUserToken(token);
       jwtManager.setUserData(user);
       queryClient.setQueryData(["user"], user);
+
       showCustomToast({
         title: "Login Successful",
         message: "You have been logged in successfully.",
         type: "success",
       });
-      router.push("/dashboard");
+
+      if (redirect?.startsWith("/")) {
+        router.push(redirect);
+      } else {
+        router.push("/user/dashboard");
+      }
     },
     onError: (error) => {
-      console.log("error dd", error);
       const message =
         error.status === 401
           ? "Invalid credentials. Please check your email and password."
@@ -54,10 +92,7 @@ export function useAuth() {
   // ==================== REGISTER ====================
   const registerMutation = useMutation({
     mutationFn: async (userData) => {
-      const { data } = await userApi.post(
-        API_ENDPOINTS.USER_REGISTER,
-        userData,
-      );
+      const { data } = await UserRegisterServices(userData);
       return data;
     },
     onSuccess: (data) => {
@@ -66,27 +101,34 @@ export function useAuth() {
 
       jwtManager.setUserToken(token);
       jwtManager.setUserData(user);
+      queryClient.setQueryData(["user"], user);
 
       showCustomToast({
         title: "Register Successful",
-        message: "You have been register in successfully.",
+        message: "You have been registered successfully.",
         type: "success",
       });
-      queryClient.setQueryData(["user"], user);
 
-      router.push("/dashboard");
+      router.push("/user/dashboard");
     },
     onError: (error) => {
-      // Laravel validation errors
       if (error.response?.data?.errors) {
         const errors = error.response.data.errors;
         Object.keys(errors).forEach((key) => {
-          toast.error(errors[key][0]);
+          toast.error();
+          showCustomToast({
+            title: "Register Failed",
+            message: errors[key][0],
+            type: "error",
+          });
         });
       } else {
-        const message =
-          error.response?.data?.message || "রেজিস্ট্রেশন ব্যর্থ হয়েছে";
-        toast.error(message);
+        const message = error.response?.data?.message || "Registration failed";
+        showCustomToast({
+          title: "Register Failed",
+          message: message,
+          type: "error",
+        });
       }
     },
   });
@@ -99,41 +141,35 @@ export function useAuth() {
   } = useQuery({
     queryKey: ["user"],
     queryFn: async () => {
-      // প্রথমে localStorage থেকে দেখা
       const cachedUser = jwtManager.getUserData();
       if (cachedUser) return cachedUser;
 
-      // না থাকলে API call
-      const { data } = await userApi.get(API_ENDPOINTS.USER_ME);
-
-      // Laravel JWT response এ সাধারণত direct user object থাকে
+      const { data } = await UserGetMeServices();
       const userData = data.user || data;
       jwtManager.setUserData(userData);
-
       return userData;
     },
     enabled: jwtManager.isUserAuthenticated(),
     retry: false,
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 60 * 5,
   });
 
   // ==================== LOGOUT ====================
   const logoutMutation = useMutation({
     mutationFn: async () => {
       try {
-        // Laravel JWT logout endpoint call (optional)
-        await userApi.post(API_ENDPOINTS.USER_LOGOUT);
+        await UserLogoutServices();
       } catch (error) {
-        // Ignore errors on logout
-        console.log("Logout error:", error);
       }
     },
     onSettled: () => {
-      // সব data clear করা
       jwtManager.removeUserToken();
       queryClient.clear();
-
-      toast.success("লগআউট সফল হয়েছে");
+      showCustomToast({
+        type: "error",
+        title: "Success",
+        message: "Logged out successfully.",
+      });
       router.push("/login");
     },
   });
@@ -141,24 +177,76 @@ export function useAuth() {
   // ==================== REFRESH TOKEN ====================
   const refreshTokenMutation = useMutation({
     mutationFn: async () => {
-      const { data } = await userApi.post(API_ENDPOINTS.USER_REFRESH);
+      const { data } = await UserRefreshTokenServices();
       return data;
     },
     onSuccess: (data) => {
       const newToken = data.access_token || data.token;
       jwtManager.setUserToken(newToken);
-      toast.success("সেশন রিফ্রেশ হয়েছে");
+    },
+  });
+
+  // ==================== FORGOT PASSWORD ====================
+  const forgotPasswordMutation = useMutation({
+    mutationFn: async (email) => {
+      const { data } = await UserForgotPasswordServices(email);
+      return data;
+    },
+    onSuccess: () => {
+      showCustomToast({
+        title: "Email Sent",
+        message: "Password reset link sent to your email.",
+        type: "success",
+      });
+    },
+    onError: (error) => {
+      const message =
+        error.response?.data?.errors?.email?.[0] ||
+        error.response?.data?.error ||
+        "Failed to send reset link. Please try again.";
+
+      showCustomToast({
+        title: "Failed",
+        message,
+        type: "error",
+      });
+    },
+  });
+
+  // ==================== RESET PASSWORD ====================
+  const resetPasswordMutation = useMutation({
+    mutationFn: async (payload) => {
+      const { data } = await UserResetPasswordServices(payload);
+      return data;
+    },
+    onSuccess: () => {
+      showCustomToast({
+        title: "Password Reset",
+        message: "Your password has been reset successfully.",
+        type: "success",
+      });
+      router.push("/login");
+    },
+    onError: (error) => {
+      const message =
+        error.response?.data?.errors?.password?.[0] ||
+        error.response?.data?.error ||
+        "Failed to reset password. Please try again.";
+
+      showCustomToast({
+        title: "Failed",
+        message,
+        type: "error",
+      });
     },
   });
 
   return {
-    // User data
     user,
     isLoading,
     error,
     isAuthenticated: jwtManager.isUserAuthenticated(),
 
-    // Mutations
     login: loginMutation.mutate,
     isLoginLoading: loginMutation.isPending,
 
@@ -169,5 +257,12 @@ export function useAuth() {
     isLogoutLoading: logoutMutation.isPending,
 
     refreshToken: () => refreshTokenMutation.mutate(),
+
+    forgotPassword: forgotPasswordMutation.mutate,
+    isForgotPasswordLoading: forgotPasswordMutation.isPending,
+    isForgotPasswordSuccess: forgotPasswordMutation.isSuccess,
+
+    resetPassword: resetPasswordMutation.mutate,
+    isResetPasswordLoading: resetPasswordMutation.isPending,
   };
 }

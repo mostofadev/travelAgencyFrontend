@@ -1,3 +1,5 @@
+
+
 import { QUERY_KEYS } from "@/lib/react-query/queryKeys";
 import { FlightClassServices } from "@/lib/services/Admin/FlightClassServices";
 import { FlightsServices } from "@/lib/services/Admin/FlightsServices";
@@ -49,9 +51,9 @@ export const useCreateFlightClass = (options = {}) => {
       showCustomToast({
         type: "error",
         title: "Error",
-        message: error?.response?.data?.message || "Failed to create Flight Class",
+        message:
+          error?.response?.data?.message || "Failed to create Flight Class",
       });
-      console.error("Create error:", error);
     },
     ...options,
   });
@@ -80,9 +82,10 @@ export const useUpdateFlightClass = (options = {}) => {
       showCustomToast({
         type: "error",
         title: "Error",
-        message: error?.response?.data?.message || "Failed to update Flight Class",
+        message:
+          error?.response?.data?.message || "Failed to update Flight Class",
       });
-      console.error("Update error:", error);
+      
     },
     ...options,
   });
@@ -101,15 +104,22 @@ export const useDeleteFlightClass = (options = {}) => {
       });
     },
     onError: (error) => {
-      console.log("Full Error:", error.response);
-      console.log("Backend Message:", error.response?.data);
       showCustomToast({
         type: "error",
         title: "Error",
-        message: error?.response?.data?.message || "Failed to delete Flight Class",
+        message:
+          error?.response?.data?.message || "Failed to delete Flight Class",
       });
-    //  console.error("Delete error:", error);
     },
     ...options,
+  });
+};
+
+export const useAllFlight = () => {
+  return useQuery({
+    queryKey: QUERY_KEYS.FLIGHTS.lists(),
+    queryFn: () => FlightClassServices.getAllFlight(),
+    keepPreviousData: true,
+    staleTime: 30000,
   });
 };

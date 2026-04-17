@@ -1,19 +1,38 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Section from "@/components/ui/Section";
 import Button from "@/components/ui/Button";
+import { jwtManager } from "@/lib/auth/jwt";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [isAuth, setIsAuth] = useState(true); // true = not authenticated = Login
+
+  useEffect(() => {
+    const checkAuth = () => {
+      setIsAuth(!jwtManager.isUserAuthenticated());
+      setMounted(true);
+    };
+
+    checkAuth();
+
+    window.addEventListener("storage", checkAuth);
+    window.addEventListener("authChange", checkAuth); // custom event
+
+    return () => {
+      window.removeEventListener("storage", checkAuth);
+      window.removeEventListener("authChange", checkAuth);
+    };
+  }, []);
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
   const closeMenu = () => setIsMenuOpen(false);
 
   const menuItems = [
     { name: "Home", href: "/" },
-    { name: "About", href: "/about" },
     { name: "Visa", href: "/visa" },
     { name: "Flight", href: "/flight" },
     { name: "Package", href: "/tour" },
@@ -48,7 +67,13 @@ export default function Navbar() {
 
           {/* Desktop Login Button */}
           <div className="hidden lg:block">
-            <Button href="/login">LogIn</Button>
+            {!mounted ? (
+              <Button href="/login">LogIn</Button>
+            ) : !isAuth ? (
+              <Button href="/user/dashboard">Profile</Button>
+            ) : (
+              <Button href="/login">LogIn</Button>
+            )}
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -77,7 +102,7 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         <div
-          className={` fixed top-0 left-0 w-full h-full bg-white z-50 lg:hidden transform transition-transform duration-300 ${
+          className={`fixed top-0 left-0 w-full h-full bg-white z-50 lg:hidden transform transition-transform duration-300 ${
             isMenuOpen ? "translate-x-0" : "-translate-x-full"
           } flex flex-col`}
         >
@@ -117,9 +142,19 @@ export default function Navbar() {
 
           {/* Mobile Login Button */}
           <div className="px-6 pb-6">
-            <Button href="/login" fullWidth onClick={closeMenu}>
-              LogIn
-            </Button>
+            {!mounted ? (
+              <Button href="/login" fullWidth onClick={closeMenu}>
+                LogIn
+              </Button>
+            ) : !isAuth ? (
+              <Button href="/user/dashboard" fullWidth onClick={closeMenu}>
+                Profile
+              </Button>
+            ) : (
+              <Button href="/login" fullWidth onClick={closeMenu}>
+                LogIn
+              </Button>
+            )}
           </div>
         </div>
 

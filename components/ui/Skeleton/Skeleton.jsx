@@ -1,5 +1,3 @@
-// components/ui/Skeleton.jsx
-// ✅ No tailwind.config.js edit needed!
 
 export function Skeleton({ className = "" }) {
   return (

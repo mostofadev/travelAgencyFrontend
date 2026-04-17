@@ -1,13 +1,5 @@
 "use client";
 
-// components/banner/SliderArrows.jsx
-// ─────────────────────────────────────────────────────────────────────────────
-// Banner slider এর Prev / Next arrow buttons।
-//
-// Props:
-//   onPrev → function — previous slide এ যাওয়ার function
-//   onNext → function — next slide এ যাওয়ার function
-// ─────────────────────────────────────────────────────────────────────────────
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 

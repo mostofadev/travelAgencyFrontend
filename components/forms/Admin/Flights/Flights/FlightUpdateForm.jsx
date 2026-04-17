@@ -92,7 +92,6 @@ function FlightsUpdateForm({ id }) {
   }, [flightData, reset]);
 
   const onSubmit = async (data) => {
-    console.log("submit data", data);
     try {
       const formData = new FormData();
       formData.append("flight_number", data.flight_number);
@@ -110,11 +109,9 @@ function FlightsUpdateForm({ id }) {
         { id, data: formData },
         {
           onSuccess: (response) => {
-            console.log("Success response:", response);
             router.push("/admin/flights");
           },
           onError: (error) => {
-            console.error("Error response:", error);
             if (error.response?.status === 422) {
               const serverErrors = error.response?.data?.errors || {};
               Object.keys(serverErrors).forEach((field) => {
@@ -128,7 +125,7 @@ function FlightsUpdateForm({ id }) {
         }
       );
     } catch (error) {
-      console.error("Submit error:", error);
+      
     }
   };
 

@@ -3,8 +3,8 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { QUERY_KEYS } from "@/lib/react-query/queryKeys";
-import { toast } from "react-hot-toast"; // or your toast library
 import { visaTypeService } from "@/lib/services/Admin/VisaTypeServices";
+import { showCustomToast } from "@/lib/ShowCustomToast";
 
 /**
  * useVisaTypes - Get all visa types with pagination
@@ -58,7 +58,7 @@ export function useCreateVisaType() {
       const message =
         error?.response?.data?.message || "Failed to create visa type";
 
-      ShowCustomToast({
+      showCustomToast({
         title: "Visa Type Created",
         message: message,
         type: "error",

@@ -11,9 +11,10 @@ const Select = forwardRef(
       options = [],
       placeholder = "Select an option",
       className = "",
+      disabled,
       ...props
     },
-    ref
+    ref,
   ) => {
     return (
       <div className="w-full">
@@ -27,6 +28,7 @@ const Select = forwardRef(
         <div className="relative">
           <select
             ref={ref}
+            disabled={disabled}
             className={`
               w-full px-4 py-3 pr-10
               bg-white border rounded-xl
@@ -40,9 +42,13 @@ const Select = forwardRef(
             `}
             {...props}
           >
-            <option value="" disabled>
-              {placeholder}
-            </option>
+            {disabled ? (
+              ""
+            ) : (
+              <option value="" disabled>
+                {placeholder}
+              </option>
+            )}
             {options.map((option) => (
               <option
                 key={option.value}
@@ -75,7 +81,7 @@ const Select = forwardRef(
         )}
       </div>
     );
-  }
+  },
 );
 
 Select.displayName = "Select";

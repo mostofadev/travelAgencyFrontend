@@ -26,10 +26,6 @@ export default function VisaListComponent() {
         onPageChange: setPage,
       }
     : null;
-  console.log("current_page", data.data.current_page);
-  console.log("last_page", data.data.last_page);
-  console.log("total", data.data.total);
-  console.log("per_page", data.data.per_page);
 
   // Columns configuration
   const columns = [
@@ -101,7 +97,6 @@ export default function VisaListComponent() {
     }
   };
 
-  console.log("pagination", paginationInfo);
 
   return (
     <div className="space-y-6">

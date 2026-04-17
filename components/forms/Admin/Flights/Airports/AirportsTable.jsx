@@ -13,7 +13,6 @@ export default function AirportsTable() {
 
   const { data, isLoading, refetch } = useAirports({ page, perPage });
   const deleteAirports = useDeleteAirports();
-  console.log('table airports',data);
   
   if (isLoading) {
     return <TableSkeleton rows={10} columns={7} />;

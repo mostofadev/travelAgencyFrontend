@@ -13,7 +13,6 @@ export default function FlightsTable() {
 
   const { data, isLoading, refetch } = useFlights({ page, perPage });
   const deleteFlights = useDeleteFlights();
-  console.log("table flights", data);
 
   if (isLoading) {
     return <TableSkeleton rows={10} columns={7} />;

@@ -22,7 +22,6 @@ export function useAdminAuth() {
       
     },
     onSuccess: (data) => {
-       console.log('login data',data);
       const token = data.access_token || data.token;
       const admin = data.admin || data.user || data;
 
@@ -101,15 +100,11 @@ export function useAdminAuth() {
   const logoutMutation = useMutation({
     mutationFn: async () => {
       try {
-        // Call Laravel logout endpoint
         await adminApi.post(API_ENDPOINTS.ADMIN_LOGOUT);
       } catch (error) {
-        // Ignore errors on logout (token might be expired)
-        console.log("Logout API error (ignored):", error.message);
       }
     },
     onSettled: () => {
-      // Clear all data regardless of API call success
       jwtManager.removeAdminToken();
       queryClient.clear();
 

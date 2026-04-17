@@ -9,12 +9,10 @@ export default function ItineraryFields({
   setItineraries,
   errors,
   setValue,
-  // ✅ maxDays prop removed - no limit
 }) {
   const [expandedIndex, setExpandedIndex] = useState(null);
 
   const addItinerary = () => {
-    // ✅ No limit check - user can add unlimited days
     const newItinerary = {
       day_number: itineraries.length + 1,
       title: "",
@@ -25,13 +23,12 @@ export default function ItineraryFields({
     const newItineraries = [...itineraries, newItinerary];
     setItineraries(newItineraries);
     setValue("itineraries", newItineraries, { shouldValidate: true });
-    setExpandedIndex(itineraries.length); // Auto-expand new day
+    setExpandedIndex(itineraries.length); 
   };
 
   const removeItinerary = (index) => {
     const updatedItineraries = itineraries.filter((_, i) => i !== index);
     
-    // Reorder day numbers
     const reorderedItineraries = updatedItineraries.map((item, i) => ({
       ...item,
       day_number: i + 1,

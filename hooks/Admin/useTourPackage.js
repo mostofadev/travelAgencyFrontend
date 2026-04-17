@@ -3,7 +3,6 @@ import { TourPackageServices } from "@/lib/services/Admin/TourPackageServices";
 import { showCustomToast } from "@/lib/ShowCustomToast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-// Get all tour packages with pagination
 export const useTourPackages = ({
   page = 1,
   perPage = 10,
@@ -58,7 +57,6 @@ export const useCreateTourPackage = (options = {}) => {
         message:
           error?.response?.data?.message || "Failed to create tour package",
       });
-      console.error("Create error:", error);
     },
     ...options,
   });
@@ -86,7 +84,6 @@ export const useUpdateTourPackage = (options = {}) => {
         message:
           error?.response?.data?.message || "Failed to update tour package",
       });
-      console.error("Update error:", error);
     },
     ...options,
   });
@@ -113,7 +110,6 @@ export const useDeleteTourPackage = (options = {}) => {
         message:
           error?.response?.data?.message || "Failed to delete tour package",
       });
-      console.error("Delete error:", error);
     },
     ...options,
   });
@@ -139,7 +135,6 @@ export const useToggleActiveTourPackage = (options = {}) => {
         title: "Error",
         message: error?.response?.data?.message || "Failed to update status",
       });
-      console.error("Toggle active error:", error);
     },
     ...options,
   });
@@ -166,7 +161,6 @@ export const useToggleFeaturedTourPackage = (options = {}) => {
         message:
           error?.response?.data?.message || "Failed to update featured status",
       });
-      console.error("Toggle featured error:", error);
     },
     ...options,
   });

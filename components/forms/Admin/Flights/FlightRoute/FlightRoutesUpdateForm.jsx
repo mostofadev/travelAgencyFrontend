@@ -16,14 +16,12 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 function FlightRouteUpdateForm({ RouteId }) {
-  console.log('id',RouteId);
   
   const router = useRouter();
 
   const { data: routeData, isLoading: routeLoading } = useFlightRouteById({ id:RouteId });
   const { data: airportsData, isLoading: airportsLoading } = useFlightRouteAirportList();
   const { mutate, isPending } = useUpdateFlightRoute();
-  console.log(routeData);
   
   const route = routeData?.data;
 

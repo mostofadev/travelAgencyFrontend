@@ -5,7 +5,6 @@ import React from 'react'
 
 function Page() {
    const { id } = useParams();
-   console.log(id);
    
   return (
     <div>

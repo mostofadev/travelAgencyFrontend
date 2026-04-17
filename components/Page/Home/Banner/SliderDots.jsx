@@ -1,16 +1,6 @@
 "use client";
 
-// components/banner/SliderDots.jsx
-// ─────────────────────────────────────────────────────────────────────────────
-// Banner slider এর dot indicators।
-// Active dot বড় এবং accent color এ দেখায়।
-//
-// Props:
-//   total      → number   — মোট slide সংখ্যা
-//   current    → number   — এখন কোন slide active (0-based)
-//   onChange   → function — dot click এ কোন index এ যাবে
-//   accentHex  → string   — active dot এর color
-// ─────────────────────────────────────────────────────────────────────────────
+
 
 export default function SliderDots({ total, current, onChange, accentHex }) {
   return (

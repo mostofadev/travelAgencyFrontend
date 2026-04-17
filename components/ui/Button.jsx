@@ -1,49 +1,9 @@
-// components/ui/Button.jsx
+
 'use client';
 import Link from 'next/link';
 
-/**
- * ========================================
- * UNIVERSAL BUTTON COMPONENT
- * ========================================
- * 
- * ONE component for ALL button needs:
- * - Regular buttons (onClick)
- * - Submit buttons (form submission)
- * - Link buttons (navigation)
- * - External link buttons
- * - Loading buttons
- * - Disabled buttons
- * - Icon buttons
- * - Different sizes & variants
- * 
- * USAGE EXAMPLES:
- * 
- * 1. Regular Button:
- *    <Button onClick={handleClick}>Click Me</Button>
- * 
- * 2. Submit Button:
- *    <Button type="submit" variant="primary">Submit Form</Button>
- * 
- * 3. Link Button (Internal):
- *    <Button href="/about">About Us</Button>
- * 
- * 4. External Link:
- *    <Button href="https://google.com" external>Visit Google</Button>
- * 
- * 5. Loading Button:
- *    <Button loading={isSubmitting}>Processing...</Button>
- * 
- * 6. Icon Button:
- *    <Button icon={<SendIcon />}>Send Email</Button>
- * 
- * 7. Disabled Button:
- *    <Button disabled>Not Available</Button>
- * 
- * ========================================
- */
 
-// Loading Spinner Component (defined outside)
+
 const LoadingSpinner = () => (
   <svg 
     className="animate-spin h-5 w-5" 
@@ -72,43 +32,36 @@ export default function Button({
   // Button Content
   children,
   
-  // Button Type
-  type = 'button',           // 'button' | 'submit' | 'reset'
-  
-  // Link Props (if button is a link)
-  href,                      // URL for navigation
-  external = false,          // Open in new tab?
+  type = 'button',
+  href,                     
+  external = false,          
   
   // Styling Variants
-  variant = 'primary',       // 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'success' | 'link'
-  size = 'md',               // 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  variant = 'primary',       
+  size = 'md',               
   
   // Layout
-  fullWidth = false,         // Take full width?
+  fullWidth = false,      
   
   // Icon
-  icon,                      // Icon component or element
-  iconPosition = 'left',     // 'left' | 'right'
-  iconOnly = false,          // Show only icon (no text)
+  icon,                 
+  iconPosition = 'left',   
+  iconOnly = false,         
   
   // States
-  loading = false,           // Show loading spinner?
-  disabled = false,          // Disabled state?
+  loading = false,          
+  disabled = false,       
   
   // Handlers
-  onClick,                   // Click handler function
+  onClick,               
   
   // Additional Props
-  className = '',            // Extra CSS classes
-  ariaLabel,                 // Accessibility label
-  ...rest                    // Any other HTML button props
+  className = '',           
+  ariaLabel,                 
+  ...rest                  
 }) {
   
-  // ========================================
-  // STYLE CONFIGURATIONS
-  // ========================================
-  
-  // Base styles (always applied)
+
   const baseStyles = `
     inline-flex items-center justify-center gap-2
     font-semibold rounded-xl

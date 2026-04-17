@@ -1,4 +1,4 @@
-// components/forms/Auth/CaptchaBox.jsx
+
 'use client';
 import { useState, forwardRef, useImperativeHandle } from "react";
 
@@ -8,7 +8,6 @@ const generateCaptcha = () => {
   return { a, b, answer: a + b };
 };
 
-// forwardRef এ named function দাও — dynamic import এর সাথে কাজ করে
 const CaptchaBox = forwardRef(function CaptchaBox(_, ref) {
   const [captcha, setCaptcha] = useState(generateCaptcha);
   const [captchaInput, setCaptchaInput] = useState("");

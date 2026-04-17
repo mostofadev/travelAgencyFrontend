@@ -27,7 +27,6 @@ function VisaTypeCreateForm() {
       reset();
       router.push("/admin/visa/visa-type");
     } catch (error) {
-      // 422 validation errors কে form fields এ show করা
       if (error.response?.status === 422 && error.response?.data?.errors) {
         const serverErrors = error.response.data.errors;
         

@@ -23,7 +23,6 @@ function FlightRouteCreateForm() {
       value: String(airport.id),
       label: `${airport.name} (${airport.code})`,
     })) || [];
-   console.log('data',airportsData);
    
   const {
     register,

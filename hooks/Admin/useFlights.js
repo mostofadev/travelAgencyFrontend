@@ -50,7 +50,6 @@ export const useCreateFlights = (options = {}) => {
         title: "Error",
         message: error?.response?.data?.message || "Failed to create Flights",
       });
-      console.error("Create error:", error);
     },
     ...options,
   });
@@ -81,7 +80,6 @@ export const useUpdateFlights = (options = {}) => {
         title: "Error",
         message: error?.response?.data?.message || "Failed to update Flights",
       });
-      console.error("Update error:", error);
     },
     ...options,
   });
@@ -100,14 +98,11 @@ export const useDeleteFlights = (options = {}) => {
       });
     },
     onError: (error) => {
-      console.log("Full Error:", error.response);
-      console.log("Backend Message:", error.response?.data);
       showCustomToast({
         type: "error",
         title: "Error",
         message: error?.response?.data?.message || "Failed to delete Flights",
       });
-    //  console.error("Delete error:", error);
     },
     ...options,
   });

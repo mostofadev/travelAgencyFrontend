@@ -11,7 +11,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { resolve } from "styled-jsx/css";
 
 function AirportsCreateForm() {
   const router = useRouter();
@@ -51,12 +50,9 @@ function AirportsCreateForm() {
       // Submit
       mutate(formData, {
         onSuccess: (response) => {
-          console.log("Success response:", response);
           router.push("/admin/flights/airports");
         },
         onError: (error) => {
-          console.error("Error response:", error);
-          console.error("Error details:", error?.response?.data);
 
           // Handle validation errors
           if (error.response?.status === 422) {
@@ -88,7 +84,7 @@ function AirportsCreateForm() {
         },
       });
     } catch (error) {
-      console.error("Submit error:", error);
+     // console.error("Submit error:", error);
     }
   };
   return (

@@ -1,76 +1,154 @@
 "use client";
 
 import Button from "@/components/ui/Button";
-// components/VisaCard.jsx
+import Image from "next/image";
 
 import Link from "next/link";
 
-// ── Icons ─────────────────────────────────────────────────────
+// ── Icons 
 const IconArrow = () => (
-  <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 16 16"
+  <svg
+    stroke="currentColor"
+    fill="currentColor"
+    strokeWidth="0"
+    viewBox="0 0 16 16"
     className="transition-transform duration-300 group-hover/btn:translate-x-1"
-    height="14" width="14" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <path fillRule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+    height="14"
+    width="14"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden="true"
+  >
+    <path
+      fillRule="evenodd"
+      d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
+    />
   </svg>
 );
 
 const IconClock = () => (
-  <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" aria-hidden="true">
-    <circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" />
+  <svg
+    className="w-3 h-3"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+  >
+    <circle cx="12" cy="12" r="10" />
+    <path d="M12 6v6l4 2" />
   </svg>
 );
 const IconGlobe = () => (
-  <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" aria-hidden="true">
+  <svg
+    className="w-3 h-3"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+  >
     <circle cx="12" cy="12" r="10" />
     <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
   </svg>
 );
 const IconEntry = () => (
-  <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" aria-hidden="true">
+  <svg
+    className="w-3 h-3"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+  >
     <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M13.8 12H3" />
   </svg>
 );
 const IconCalendar = () => (
-  <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" aria-hidden="true">
-    <rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" />
+  <svg
+    className="w-3 h-3"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+  >
+    <rect x="3" y="4" width="18" height="18" rx="2" />
+    <path d="M16 2v4M8 2v4M3 10h18" />
   </svg>
 );
 const IconStay = () => (
-  <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" aria-hidden="true">
+  <svg
+    className="w-3 h-3"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+  >
     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
     <polyline points="9 22 9 12 15 12 15 22" />
   </svg>
 );
 const IconPin = () => (
-  <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24" aria-hidden="true">
-    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" />
+  <svg
+    className="w-3 h-3"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+  >
+    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+    <circle cx="12" cy="10" r="3" />
   </svg>
 );
 
 // ── Badge colour map ──────────────────────────────────────────
 const TYPE_COLORS = {
-  Work:     { bg: "#ede9fe", text: "#6d28d9", border: "#c4b5fd" },
-  Tourist:  { bg: "#d1fae5", text: "#065f46", border: "#6ee7b7" },
-  Student:  { bg: "#dbeafe", text: "#1e40af", border: "#93c5fd" },
+  Work: { bg: "#ede9fe", text: "#6d28d9", border: "#c4b5fd" },
+  Tourist: { bg: "#d1fae5", text: "#065f46", border: "#6ee7b7" },
+  Student: { bg: "#dbeafe", text: "#1e40af", border: "#93c5fd" },
   Business: { bg: "#fef3c7", text: "#92400e", border: "#fcd34d" },
-  Transit:  { bg: "#fee2e2", text: "#991b1b", border: "#fca5a5" },
-  default:  { bg: "#f1f5f9", text: "#475569", border: "#cbd5e1" },
+  Transit: { bg: "#fee2e2", text: "#991b1b", border: "#fca5a5" },
+  default: { bg: "#f1f5f9", text: "#475569", border: "#cbd5e1" },
 };
 
 // ── Detail Pill ───────────────────────────────────────────────
 function Pill({ icon, label, value }) {
   if (!value) return null;
   return (
-    <div style={{
-      display: "flex", alignItems: "center", gap: "5px",
-      background: "#f8fafc", border: "1px solid #e2e8f0",
-      borderRadius: "6px", padding: "4px 8px",
-    }}>
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "5px",
+        background: "#f8fafc",
+        border: "1px solid #e2e8f0",
+        borderRadius: "6px",
+        padding: "4px 8px",
+      }}
+    >
       <span style={{ color: "#64748b", display: "flex" }}>{icon}</span>
-      <span style={{ fontSize: "10px", fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.04em", whiteSpace: "nowrap" }}>
+      <span
+        style={{
+          fontSize: "10px",
+          fontWeight: 600,
+          color: "#94a3b8",
+          textTransform: "uppercase",
+          letterSpacing: "0.04em",
+          whiteSpace: "nowrap",
+        }}
+      >
         {label}
       </span>
-      <span style={{ fontSize: "11px", fontWeight: 600, color: "#334155", whiteSpace: "nowrap" }}>
+      <span
+        style={{
+          fontSize: "11px",
+          fontWeight: 600,
+          color: "#334155",
+          whiteSpace: "nowrap",
+        }}
+      >
         {value}
       </span>
     </div>
@@ -79,6 +157,7 @@ function Pill({ icon, label, value }) {
 
 // ── Main Card ─────────────────────────────────────────────────
 export default function VisaCard({ visa }) {
+  
   const {
     visa_code,
     visa_title,
@@ -223,24 +302,35 @@ export default function VisaCard({ visa }) {
       `}</style>
 
       <div className="visa-card">
-
         {/* ── LEFT: Image ── */}
         <div className="visa-card__image-wrap">
-          <img
+          <Image
+            fill
             src={image_url}
+            unoptimized
             alt={`${visa_title}${country?.name ? ` — ${country.name}` : ""}`}
           />
 
           {/* Country overlay pill */}
           {country?.name && (
-            <div style={{
-              position: "absolute", bottom: "10px", left: "10px",
-              display: "flex", alignItems: "center", gap: "4px",
-              background: "rgba(255,255,255,0.92)", backdropFilter: "blur(6px)",
-              borderRadius: "20px", padding: "3px 8px",
-              fontSize: "10px", fontWeight: 700, color: "#1e293b",
-              boxShadow: "0 1px 6px rgba(0,0,0,0.15)",
-            }}>
+            <div
+              style={{
+                position: "absolute",
+                bottom: "10px",
+                left: "10px",
+                display: "flex",
+                alignItems: "center",
+                gap: "4px",
+                background: "rgba(255,255,255,0.92)",
+                backdropFilter: "blur(6px)",
+                borderRadius: "20px",
+                padding: "3px 8px",
+                fontSize: "10px",
+                fontWeight: 700,
+                color: "#1e293b",
+                boxShadow: "0 1px 6px rgba(0,0,0,0.15)",
+              }}
+            >
               <IconPin />
               {country.name}
             </div>
@@ -250,51 +340,107 @@ export default function VisaCard({ visa }) {
         {/* ── MIDDLE: Content ── */}
         <div className="visa-card__content">
           {/* Title + badge row */}
-          <div style={{ display: "flex", alignItems: "flex-start", flexWrap: "wrap", gap: "8px" }}>
-            <h2 style={{
-              margin: 0, fontSize: "15px", fontWeight: 700,
-              color: "#0f172a", lineHeight: 1.3, flex: 1, minWidth: 0,
-            }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              flexWrap: "wrap",
+              gap: "8px",
+            }}
+          >
+            <h2
+              style={{
+                margin: 0,
+                fontSize: "15px",
+                fontWeight: 700,
+                color: "#0f172a",
+                lineHeight: 1.3,
+                flex: 1,
+                minWidth: 0,
+              }}
+            >
               {visa_title}
             </h2>
             {visa_type?.name && (
-              <span style={{
-                display: "inline-flex", alignItems: "center",
-                padding: "2px 10px", borderRadius: "20px",
-                fontSize: "10px", fontWeight: 800,
-                textTransform: "uppercase", letterSpacing: "0.06em",
-                background: typeColor.bg, color: typeColor.text,
-                border: `1px solid ${typeColor.border}`,
-                whiteSpace: "nowrap", flexShrink: 0,
-              }}>
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  padding: "2px 10px",
+                  borderRadius: "20px",
+                  fontSize: "10px",
+                  fontWeight: 800,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.06em",
+                  background: typeColor.bg,
+                  color: typeColor.text,
+                  border: `1px solid ${typeColor.border}`,
+                  whiteSpace: "nowrap",
+                  flexShrink: 0,
+                }}
+              >
                 {visa_type.name}
               </span>
             )}
           </div>
 
           {/* Code */}
-          <p style={{ margin: 0, fontSize: "10px", color: "#94a3b8", fontFamily: "monospace", letterSpacing: "0.05em" }}>
+          <p
+            style={{
+              margin: 0,
+              fontSize: "10px",
+              color: "#94a3b8",
+              fontFamily: "monospace",
+              letterSpacing: "0.05em",
+            }}
+          >
             #{visa_code}
           </p>
 
           {/* Description */}
           {description && (
-            <p style={{
-              margin: 0, fontSize: "12px", color: "#64748b", lineHeight: 1.6,
-              display: "-webkit-box", WebkitLineClamp: 2,
-              WebkitBoxOrient: "vertical", overflow: "hidden",
-            }}>
+            <p
+              style={{
+                margin: 0,
+                fontSize: "12px",
+                color: "#64748b",
+                lineHeight: 1.6,
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+              }}
+            >
               {description}
             </p>
           )}
 
           {/* Detail pills */}
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "5px", marginTop: "2px" }}>
-            <Pill icon={<IconClock />}    label="Processing" value={processing?.range} />
-            <Pill icon={<IconGlobe />}    label="Mode"       value={visa_mode} />
-            <Pill icon={<IconEntry />}    label="Entry"      value={entry_type} />
-            <Pill icon={<IconCalendar />} label="Validity"   value={validity?.formatted} />
-            <Pill icon={<IconStay />}     label="Max Stay"   value={max_stay?.label} />
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "5px",
+              marginTop: "2px",
+            }}
+          >
+            <Pill
+              icon={<IconClock />}
+              label="Processing"
+              value={processing?.range}
+            />
+            <Pill icon={<IconGlobe />} label="Mode" value={visa_mode} />
+            <Pill icon={<IconEntry />} label="Entry" value={entry_type} />
+            <Pill
+              icon={<IconCalendar />}
+              label="Validity"
+              value={validity?.formatted}
+            />
+            <Pill
+              icon={<IconStay />}
+              label="Max Stay"
+              value={max_stay?.label}
+            />
           </div>
         </div>
 
@@ -317,9 +463,7 @@ export default function VisaCard({ visa }) {
           />
 
           {/* CTA */}
-          <Button href="/visa/details">
-            View Details
-          </Button>
+          <Button href={`/visa/${visa.id}`}>View Details</Button>
         </div>
       </div>
     </>

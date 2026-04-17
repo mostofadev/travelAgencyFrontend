@@ -1,10 +1,9 @@
 "use client";
-import { useState } from "react"; // ✅ useEffect সরানো হয়েছে
+import { useState } from "react"; 
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import Textarea from "@/components/ui/Textarea";
 import FileUpload from "@/components/ui/FileUpload";
-import { useVisaFormCountries } from "@/hooks/Admin/useFormServices";
 import { tourPackageCreateValidation } from "@/lib/validations/Admin/tourPackageValidationZod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
@@ -15,6 +14,7 @@ import { useCreateTourPackage } from "@/hooks/Admin/useTourPackage";
 import { useRouter } from "next/navigation";
 import Button from "@/components/ui/Button";
 import Checkbox from "@/components/ui/Checkbox";
+import { useVisaFormCountries } from "@/hooks/Admin/useForm";
 
 function TourPackageCreateForm() {
   const router = useRouter();
@@ -71,10 +71,6 @@ function TourPackageCreateForm() {
   
 
   const onSubmit = async (data) => {
-    console.log("=== Form Submission ===");
-    console.log("Form Data:", data);
-    console.log("Itineraries from data:", data.itineraries);
-
     try {
       const formData = new FormData();
 
@@ -108,7 +104,6 @@ function TourPackageCreateForm() {
       if (imageFile) {
         formData.append("image", imageFile);
       } else {
-        console.error("No image file selected");
         alert("Please select an image");
         return;
       }
@@ -130,23 +125,14 @@ function TourPackageCreateForm() {
         }
       }
 
-      // Debug: Log FormData
-      console.log("=== FormData Contents ===");
-      for (let pair of formData.entries()) {
-        console.log(pair[0] + ":", pair[1]);
-      }
-
+     
       // Submit
       mutate(formData, {
         onSuccess: (response) => {
-          console.log("Success response:", response);
           router.push("/admin/tour-package");
         },
         onError: (error) => {
-          console.error("Error response:", error);
-          console.error("Error details:", error?.response?.data);
 
-          // Handle validation errors
           if (error.response?.status === 422) {
             const serverErrors = error.response?.data?.errors || {};
 
@@ -176,7 +162,7 @@ function TourPackageCreateForm() {
         },
       });
     } catch (error) {
-      console.error("Submit error:", error);
+      
     }
   };
 

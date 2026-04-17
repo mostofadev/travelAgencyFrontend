@@ -38,7 +38,6 @@ export const useCreateFlightRoute = (options = {}) => {
     mutationFn: (data) => FlightRouteServices.create(data),
     onSuccess: () => {
       (queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ROUTE.list() }),
-
         showCustomToast({
           type: "success",
           title: "Success",
@@ -49,9 +48,9 @@ export const useCreateFlightRoute = (options = {}) => {
       showCustomToast({
         type: "error",
         title: "Error",
-        message: error?.response?.data?.message || "Failed to create Flight Route",
+        message:
+          error?.response?.data?.message || "Failed to create Flight Route",
       });
-      console.error("Create error:", error);
     },
     ...options,
   });
@@ -80,9 +79,9 @@ export const useUpdateFlightRoute = (options = {}) => {
       showCustomToast({
         type: "error",
         title: "Error",
-        message: error?.response?.data?.message || "Failed to update Flight Route",
+        message:
+          error?.response?.data?.message || "Failed to update Flight Route",
       });
-      console.error("Update error:", error);
     },
     ...options,
   });
@@ -93,7 +92,7 @@ export const useDeleteFlightRoute = (options = {}) => {
   return useMutation({
     mutationFn: (id) => FlightRouteServices.delete({ id }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ROUTE.list() })
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ROUTE.list() });
 
       showCustomToast({
         type: "success",
@@ -102,14 +101,12 @@ export const useDeleteFlightRoute = (options = {}) => {
       });
     },
     onError: (error) => {
-      console.log("Full Error:", error.response);
-      console.log("Backend Message:", error.response?.data);
       showCustomToast({
         type: "error",
         title: "Error",
-        message: error?.response?.data?.message || "Failed to delete Flight Route",
+        message:
+          error?.response?.data?.message || "Failed to delete Flight Route",
       });
-    //  console.error("Delete error:", error);
     },
     ...options,
   });
@@ -119,7 +116,6 @@ export const useFlightRouteAirportList = (options = {}) => {
   return useQuery({
     queryKey: QUERY_KEYS.AIRPORTS.list(),
     queryFn: async () => {
-      console.log("QUERY FUNCTION RUNNING");
       return FlightRouteServices.airportList();
     },
     keepPreviousData: true,

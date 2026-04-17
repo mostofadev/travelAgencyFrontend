@@ -1,22 +1,12 @@
 "use client";
 
-// components/banner/BannerSlide.jsx
-// ─────────────────────────────────────────────────────────────────────────────
-// একটি single slide — image background + center title + description।
-// isActive হলে content animate হয়ে দেখায়।
-//
-// Props:
-//   slide      → bannerSlides.js থেকে একটি object
-//   isActive   → boolean — এই slide টি এখন দেখানো হচ্ছে কিনা
-//   visible    → boolean — content fade-in হবে কিনা (navigation এ false হয়)
-// ─────────────────────────────────────────────────────────────────────────────
+
 
 import { Plane } from "lucide-react";
 
 export default function BannerSlide({ slide, isActive, visible }) {
   return (
     <>
-      {/* ── Background Image (crossfade) ── */}
       <div
         style={{
           position: "absolute",

@@ -75,11 +75,9 @@ function FlightsCreateForm() {
 
       mutate(formData, {
         onSuccess: (response) => {
-          console.log("Success response:", response);
           router.push("/admin/flights");
         },
         onError: (error) => {
-          console.error("Error response:", error);
           if (error.response?.status === 422) {
             const serverErrors = error.response?.data?.errors || {};
             Object.keys(serverErrors).forEach((field) => {
@@ -92,7 +90,7 @@ function FlightsCreateForm() {
         },
       });
     } catch (error) {
-      console.error("Submit error:", error);
+      
     }
   };
 

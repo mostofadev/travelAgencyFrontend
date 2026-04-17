@@ -1,13 +1,16 @@
 // app/page.jsx
 "use client";
-import BannerWithFilter from "@/components/Page/filter/BannerWithFilter";
+import BannerWithFilter from "@/components/ui/filter/BannerWithFilter";
 import TopDestinations from "@/components/Page/Home/Destination/TopDestinations";
 import TourPackages from "@/components/Page/Home/TourPackage/Tourpackages";
 import { useEffect, useState } from "react";
+import { useHomePageTour } from "@/hooks/Page/useHome";
 
 export default function HomePage() {
   const [isMobile, setIsMobile] = useState(false);
-
+  const { data, isLoading } = useHomePageTour();
+  console.log("tour", data);
+  const tours = data?.data;
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -37,7 +40,7 @@ export default function HomePage() {
         }}
         className="px-3"
       >
-        <TourPackages />
+        <TourPackages tours={tours} isLoading={isLoading} />
       </div>
     </main>
   );

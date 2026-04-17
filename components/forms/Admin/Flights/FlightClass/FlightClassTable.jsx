@@ -13,7 +13,6 @@ export default function FlightClassTable() {
 
   const { data, isLoading, refetch } = useFlightClass({ page, perPage });
   const deleteFlightClass = useDeleteFlightClass();
-  console.log("table flight class", data);
 
   if (isLoading) {
     return <TableSkeleton rows={10} columns={7} />;

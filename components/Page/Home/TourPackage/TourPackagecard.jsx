@@ -95,12 +95,7 @@ export function TourPackageCard({ pkg, index = 0 }) {
 
   return (
     <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        animationDelay: `${index * 0.1}s`,
-        animation: "slideUp 0.6s ease both",
-      }}
+      
       className={`
         relative bg-white rounded-2xl overflow-hidden flex flex-col shadow-lg
         transition-all duration-400 ease-out
@@ -113,7 +108,7 @@ export function TourPackageCard({ pkg, index = 0 }) {
       {/* ── Image wrapper — aspect-ratio 16/9 locks same height always ── */}
       <div className="relative w-full overflow-hidden" style={{ aspectRatio: "16/9" }}>
         <img
-          src={pkg.image}
+          src={pkg.image_url}
           alt={pkg.title}
           className={`
             absolute inset-0 w-full h-full object-cover
@@ -122,30 +117,19 @@ export function TourPackageCard({ pkg, index = 0 }) {
           `}
         />
 
-        {/* Dark gradient bottom */}
-        {/* <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" /> */}
-
-        {/* Category — top left */}
-        {/* <span
-          className={`absolute top-3 left-3 text-[0.63rem] font-semibold tracking-wide px-2.5 py-1 rounded-full ${
-            categoryColors[pkg.category] ?? "bg-gray-100 text-gray-600"
-          }`}
-        >
-          {pkg.category}
-        </span> */}
-
+      
         {/* Duration — top right */}
         <span className="absolute top-3 right-3 flex items-center gap-1 bg-white/90  text-gray-800 text-[0.63rem] font-semibold px-2.5 py-3 rounded-full">
           {/* <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
           </svg> */}
-          {pkg.duration}
+          {pkg.duration_days}
         </span>
 
         {/* Country — bottom left */}
         <span className="absolute bottom-3 left-3 flex items-center gap-1.5 bg-black/40 backdrop-blur-sm text-white text-[0.68rem] font-medium px-2.5 py-3 rounded-full">
-          {pkg.country}
+          {pkg?.destination_country?.name}
         </span>
       </div>
 
@@ -155,7 +139,7 @@ export function TourPackageCard({ pkg, index = 0 }) {
         {/* Title — fixed min-height so all cards align */}
         <h3 className="text-gray-900 font-semibold text-[0.92rem] leading-snug line-clamp-2"
           >
-          {pkg.title}
+          {pkg.package_title}
         </h3>
 
         {/* Divider */}
@@ -168,11 +152,11 @@ export function TourPackageCard({ pkg, index = 0 }) {
               Per Person
             </p>
             <p className="text-[#0A5A70] font-bold text-[1.15rem] leading-none">
-              ৳ {pkg.price}
+              ৳ {pkg.prices}
             </p>
           </div>
 
-         <Button>
+         <Button href={`/tour/${pkg.id}`}>
             book now
          </Button>
         </div>

@@ -20,25 +20,6 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 
-/**
- * DataTable Component with Server-Side Pagination Support
- * 
- * @param {Array} data - Array of objects OR Laravel pagination object
- * @param {Array} columns - Column configuration
- * @param {Object} config - Table configuration
- * @param {Object} pagination - Pagination config for server-side
- * 
- * Pagination Props:
- * {
- *   enabled: boolean,        // Enable server-side pagination
- *   currentPage: number,     // Current page (from state)
- *   totalPages: number,      // Total pages (from API)
- *   totalItems: number,      // Total items (from API)
- *   perPage: number,         // Items per page
- *   onPageChange: function,  // Page change handler
- * }
- */
-
 export default function DataTable({
   data = [],
   columns = [],
@@ -74,13 +55,10 @@ export default function DataTable({
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   const [hoveredRow, setHoveredRow] = useState(null);
 
-  // Extract actual data array
   const actualData = useMemo(() => {
-    // If data is Laravel pagination object
     if (data?.data && Array.isArray(data.data)) {
       return data.data;
     }
-    // If data is plain array
     return data;
   }, [data]);
 
@@ -95,7 +73,10 @@ export default function DataTable({
         return columns.some((column) => {
           if (column.searchable !== false) {
             const value = item[column.key];
-            return value?.toString().toLowerCase().includes(searchTerm.toLowerCase());
+            return value
+              ?.toString()
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase());
           }
           return false;
         });
@@ -134,10 +115,10 @@ export default function DataTable({
         totalPages: pagination.totalPages || 1,
         totalItems: pagination.totalItems || actualData.length,
         perPage: pagination.perPage || itemsPerPage,
-        startIndex: ((pagination.currentPage - 1) * pagination.perPage) + 1,
+        startIndex: (pagination.currentPage - 1) * pagination.perPage + 1,
         endIndex: Math.min(
           pagination.currentPage * pagination.perPage,
-          pagination.totalItems
+          pagination.totalItems,
         ),
       };
     } else {
@@ -155,7 +136,14 @@ export default function DataTable({
         endIndex: Math.min(endIndex, sortedData.length),
       };
     }
-  }, [isServerPagination, pagination, clientPage, sortedData, itemsPerPage, actualData]);
+  }, [
+    isServerPagination,
+    pagination,
+    clientPage,
+    sortedData,
+    itemsPerPage,
+    actualData,
+  ]);
 
   // Current page data (client-side only)
   const currentData = useMemo(() => {
@@ -195,18 +183,14 @@ export default function DataTable({
 
   const handleSelectRow = (index) => {
     setSelectedRows((prev) =>
-      prev.includes(index)
-        ? prev.filter((i) => i !== index)
-        : [...prev, index]
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index],
     );
   };
 
   const handleExport = () => {
     const csv = [
       columns.map((col) => col.label).join(","),
-      ...currentData.map((row) =>
-        columns.map((col) => row[col.key]).join(",")
-      ),
+      ...currentData.map((row) => columns.map((col) => row[col.key]).join(",")),
     ].join("\n");
 
     const blob = new Blob([csv], { type: "text/csv" });
@@ -228,11 +212,10 @@ export default function DataTable({
     switch (column.type) {
       case "image":
         return value ? (
-          
           <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-gray-100 border border-gray-200 group">
             <Image
               src={value}
-              unoptimized 
+              unoptimized
               alt=""
               fill
               className="object-cover group-hover:scale-110 transition-transform duration-300"
@@ -253,12 +236,16 @@ export default function DataTable({
           pending: "bg-yellow-100 text-yellow-700 border-yellow-200",
           completed: "bg-blue-100 text-blue-700 border-blue-200",
         };
-        
-        const displayValue = value === 1 ? "Active" : value === 0 ? "Inactive" : value;
-        const colorClass = badgeColors[value] || "bg-gray-100 text-gray-700 border-gray-200";
-        
+
+        const displayValue =
+          value === 1 ? "Active" : value === 0 ? "Inactive" : value;
+        const colorClass =
+          badgeColors[value] || "bg-gray-100 text-gray-700 border-gray-200";
+
         return (
-          <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border ${colorClass}`}>
+          <span
+            className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border ${colorClass}`}
+          >
             {displayValue}
           </span>
         );
@@ -303,7 +290,6 @@ export default function DataTable({
         );
 
       default:
-        // ✅ Check if this is actions column without type defined
         if (column.key === "actions" && (onView || onEdit || onDelete)) {
           return (
             <div className="flex items-center gap-2 justify-center">
@@ -337,7 +323,7 @@ export default function DataTable({
             </div>
           );
         }
-        
+
         return <span className="text-gray-700">{value || "-"}</span>;
     }
   };
@@ -403,7 +389,10 @@ export default function DataTable({
               <th className="w-12 px-6 py-4">
                 <input
                   type="checkbox"
-                  checked={currentData.length > 0 && selectedRows.length === currentData.length}
+                  checked={
+                    currentData.length > 0 &&
+                    selectedRows.length === currentData.length
+                  }
                   onChange={handleSelectAll}
                   className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500 cursor-pointer"
                 />
@@ -413,10 +402,14 @@ export default function DataTable({
                 <th
                   key={column.key}
                   className={`px-6 py-4 text-${column.align || "left"} ${
-                    column.sortable !== false ? "cursor-pointer select-none" : ""
+                    column.sortable !== false
+                      ? "cursor-pointer select-none"
+                      : ""
                   }`}
                   style={{ width: column.width }}
-                  onClick={() => column.sortable !== false && handleSort(column.key)}
+                  onClick={() =>
+                    column.sortable !== false && handleSort(column.key)
+                  }
                 >
                   <div className="flex items-center gap-2 text-xs font-bold text-gray-600 uppercase tracking-wider">
                     <span>{column.label}</span>
@@ -444,7 +437,7 @@ export default function DataTable({
               currentData.map((item, index) => {
                 const isSelected = selectedRows.includes(index);
                 const isHovered = hoveredRow === index;
-                
+
                 return (
                   <tr
                     key={item.id || index}
@@ -479,7 +472,10 @@ export default function DataTable({
               })
             ) : (
               <tr>
-                <td colSpan={columns.length + 1} className="px-6 py-16 text-center">
+                <td
+                  colSpan={columns.length + 1}
+                  className="px-6 py-16 text-center"
+                >
                   <div className="flex flex-col items-center gap-3">
                     <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center">
                       <Search className="w-8 h-8 text-gray-400" />
@@ -498,9 +494,19 @@ export default function DataTable({
         <div className="px-6 py-4 border-t border-gray-100 bg-gradient-to-r from-gray-50 to-white">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="text-sm text-gray-600">
-              Showing <span className="font-semibold text-gray-900">{paginationInfo.startIndex}</span> to{" "}
-              <span className="font-semibold text-gray-900">{paginationInfo.endIndex}</span> of{" "}
-              <span className="font-semibold text-gray-900">{paginationInfo.totalItems}</span> results
+              Showing{" "}
+              <span className="font-semibold text-gray-900">
+                {paginationInfo.startIndex}
+              </span>{" "}
+              to{" "}
+              <span className="font-semibold text-gray-900">
+                {paginationInfo.endIndex}
+              </span>{" "}
+              of{" "}
+              <span className="font-semibold text-gray-900">
+                {paginationInfo.totalItems}
+              </span>{" "}
+              results
             </div>
 
             <div className="flex items-center gap-2">
@@ -511,7 +517,7 @@ export default function DataTable({
               >
                 <ChevronsLeft className="w-4 h-4" />
               </button>
-              
+
               <button
                 onClick={() => handlePageChange(paginationInfo.currentPage - 1)}
                 disabled={paginationInfo.currentPage === 1}
@@ -521,47 +527,54 @@ export default function DataTable({
               </button>
 
               <div className="flex items-center gap-1">
-                {Array.from({ length: Math.min(5, paginationInfo.totalPages) }, (_, i) => {
-                  let pageNum;
-                  const { totalPages, currentPage } = paginationInfo;
-                  
-                  if (totalPages <= 5) {
-                    pageNum = i + 1;
-                  } else if (currentPage <= 3) {
-                    pageNum = i + 1;
-                  } else if (currentPage >= totalPages - 2) {
-                    pageNum = totalPages - 4 + i;
-                  } else {
-                    pageNum = currentPage - 2 + i;
-                  }
+                {Array.from(
+                  { length: Math.min(5, paginationInfo.totalPages) },
+                  (_, i) => {
+                    let pageNum;
+                    const { totalPages, currentPage } = paginationInfo;
 
-                  return (
-                    <button
-                      key={i}
-                      onClick={() => handlePageChange(pageNum)}
-                      className={`min-w-[2.5rem] px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                        currentPage === pageNum
-                          ? "bg-blue-600 text-white shadow-md shadow-blue-600/20"
-                          : "border border-gray-200 hover:bg-gray-50 text-gray-700"
-                      }`}
-                    >
-                      {pageNum}
-                    </button>
-                  );
-                })}
+                    if (totalPages <= 5) {
+                      pageNum = i + 1;
+                    } else if (currentPage <= 3) {
+                      pageNum = i + 1;
+                    } else if (currentPage >= totalPages - 2) {
+                      pageNum = totalPages - 4 + i;
+                    } else {
+                      pageNum = currentPage - 2 + i;
+                    }
+
+                    return (
+                      <button
+                        key={i}
+                        onClick={() => handlePageChange(pageNum)}
+                        className={`min-w-[2.5rem] px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                          currentPage === pageNum
+                            ? "bg-blue-600 text-white shadow-md shadow-blue-600/20"
+                            : "border border-gray-200 hover:bg-gray-50 text-gray-700"
+                        }`}
+                      >
+                        {pageNum}
+                      </button>
+                    );
+                  },
+                )}
               </div>
 
               <button
                 onClick={() => handlePageChange(paginationInfo.currentPage + 1)}
-                disabled={paginationInfo.currentPage === paginationInfo.totalPages}
+                disabled={
+                  paginationInfo.currentPage === paginationInfo.totalPages
+                }
                 className="p-2 rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
-              
+
               <button
                 onClick={() => handlePageChange(paginationInfo.totalPages)}
-                disabled={paginationInfo.currentPage === paginationInfo.totalPages}
+                disabled={
+                  paginationInfo.currentPage === paginationInfo.totalPages
+                }
                 className="p-2 rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
                 <ChevronsRight className="w-4 h-4" />
@@ -575,7 +588,8 @@ export default function DataTable({
         <div className="px-6 py-3 bg-blue-50 border-t border-blue-100">
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium text-blue-700">
-              {selectedRows.length} row{selectedRows.length > 1 ? "s" : ""} selected
+              {selectedRows.length} row{selectedRows.length > 1 ? "s" : ""}{" "}
+              selected
             </span>
             <button
               onClick={() => setSelectedRows([])}

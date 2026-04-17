@@ -50,7 +50,6 @@ export const useCreateAirports = (options = {}) => {
         title: "Error",
         message: error?.response?.data?.message || "Failed to create Airports",
       });
-      console.error("Create error:", error);
     },
     ...options,
   });
@@ -81,7 +80,6 @@ export const useUpdateAirports = (options = {}) => {
         title: "Error",
         message: error?.response?.data?.message || "Failed to update Airports",
       });
-      console.error("Update error:", error);
     },
     ...options,
   });
@@ -105,7 +103,6 @@ export const useDeleteAirports = (options = {}) => {
         title: "Error",
         message: error?.response?.data?.message || "Failed to delete Airports",
       });
-      console.error("Delete error:", error);
     },
     ...options,
   });

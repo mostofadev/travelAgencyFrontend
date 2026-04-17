@@ -20,7 +20,7 @@ function AircraftsCreateForm() {
     formState: { errors },
     setError,
   } = useForm({
-    resolver: zodResolver(aircraftsCreateValidation), // FIX: was "resolve"
+    resolver: zodResolver(aircraftsCreateValidation),
     defaultValues: {
       model: "",
       manufacturer: "",
@@ -34,7 +34,6 @@ function AircraftsCreateForm() {
     formData.append("model", data.model);
     formData.append("manufacturer", data.manufacturer);
     formData.append("capacity", data.capacity);
-   // formData.append("is_active", data.is_active);
 
     mutate(formData, {
       onSuccess: () => {
@@ -100,16 +99,7 @@ function AircraftsCreateForm() {
                 {...register("capacity")}
                 error={errors.capacity?.message}
               />
-              {/* <Select
-                label="Status *"
-                placeholder="Select status"
-                options={[
-                  { value: 1, label: "Active" },
-                  { value: 0, label: "Inactive" },
-                ]}
-                {...register("is_active")}
-                error={errors.is_active?.message}
-              /> */}
+          
             </div>
 
             {/* Actions */}

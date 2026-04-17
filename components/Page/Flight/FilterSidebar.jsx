@@ -1,16 +1,31 @@
-// FilterSidebar.jsx
+"use client";
+
 import { useState } from "react";
 import {
   SlidersHorizontal,
   Plane,
   Clock,
-  Luggage,
   BadgeDollarSign,
   X,
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
-import { timeSlots , airlines} from "./FlightData";
+
+export const TIME_SLOTS = [
+  { value: "morning", label: "Morning", range: "06:00 – 11:59" },
+  { value: "afternoon", label: "Afternoon", range: "12:00 – 17:59" },
+  { value: "evening", label: "Evening", range: "18:00 – 21:59" },
+  { value: "night", label: "Night", range: "22:00 – 05:59" },
+];
+
+export function getTimeSlot(timeStr) {
+  if (!timeStr) return null;
+  const [h] = timeStr.split(":").map(Number);
+  if (h >= 6 && h < 12) return "morning";
+  if (h >= 12 && h < 18) return "afternoon";
+  if (h >= 18 && h < 22) return "evening";
+  return "night";
+}
 
 function SectionHeader({ icon: Icon, title, open, toggle }) {
   return (
@@ -31,51 +46,75 @@ function SectionHeader({ icon: Icon, title, open, toggle }) {
   );
 }
 
-export default function FilterSidebar({ filters, onChange, onReset }) {
+// ── Main FilterSidebar ─────────────────────────────────────────
+/**
+ * Props:
+ *  @param {Object}   filters      — current filter state
+ *  @param {Function} onChange     — (newFilters) => void
+ *  @param {Function} onReset      — reset to defaults
+ *  @param {Array}    flights      — all flights from API (for dynamic options)
+ *  @param {number}   absoluteMin  — min price from API
+ *  @param {number}   absoluteMax  — max price from API
+ */
+export default function FilterSidebar({
+  filters,
+  onChange,
+  onReset,
+  flights = [],
+  absoluteMin = 0,
+  absoluteMax = 100000,
+}) {
   const [openSections, setOpenSections] = useState({
     price: true,
-    stops: true,
-    baggage: true,
     departure: true,
     arrival: true,
-    airlines: true,
+    aircraft: true,
+    status: false,
   });
 
-  const toggleSection = (key) =>
+  const toggle = (key) =>
     setOpenSections((prev) => ({ ...prev, [key]: !prev[key] }));
 
-  const toggleArrayItem = (key, value) => {
-    const arr = filters[key];
-    const updated = arr.includes(value)
-      ? arr.filter((v) => v !== value)
-      : [...arr, value];
-    onChange({ ...filters, [key]: updated });
+  const toggleArray = (key, value) => {
+    const arr = filters[key] ?? [];
+    onChange({
+      ...filters,
+      [key]: arr.includes(value)
+        ? arr.filter((v) => v !== value)
+        : [...arr, value],
+    });
   };
 
+  // Dynamic options from API flights
+  const aircraftModels = [
+    ...new Set(flights.map((f) => f.aircraft?.model).filter(Boolean)),
+  ].sort();
+
+  const statuses = [
+    ...new Set(flights.map((f) => f.status).filter(Boolean)),
+  ].sort();
+
   const hasActiveFilters =
-    filters.stops.length > 0 ||
-    filters.baggage.length > 0 ||
-    filters.departureSlots.length > 0 ||
-    filters.arrivalSlots.length > 0 ||
-    filters.selectedAirlines.length > 0 ||
-    filters.minPrice > filters.absoluteMin ||
-    filters.maxPrice < filters.absoluteMax;
+    filters.departureSlots?.length > 0 ||
+    filters.arrivalSlots?.length > 0 ||
+    filters.aircraftModels?.length > 0 ||
+    filters.statuses?.length > 0 ||
+    (filters.maxPrice !== undefined && filters.maxPrice < absoluteMax);
 
   return (
-    <aside className="w-full bg-white  shadow-sm border border-gray-100 overflow-hidden sticky top-5">
+    <aside className="w-full bg-white shadow-sm border border-gray-100 overflow-hidden sticky top-5">
       {/* Header */}
       <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 bg-white">
         <div className="flex items-center gap-2">
-          <SlidersHorizontal size={16} className="text-white" />
+          <SlidersHorizontal size={16} className="text-primary" />
           <span className="text-sm font-bold text-primary">Filters</span>
         </div>
         {hasActiveFilters && (
           <button
             onClick={onReset}
-            className="flex items-center gap-1 text-xs text-primary hover:text-primary-dark  px-2 py-1 rounded-lg transition-all"
+            className="flex items-center gap-1 text-xs text-primary hover:text-primary-dark px-2 py-1 rounded-lg transition-all"
           >
-            <X size={11} />
-            Reset
+            <X size={11} /> Reset
           </button>
         )}
       </div>
@@ -87,24 +126,24 @@ export default function FilterSidebar({ filters, onChange, onReset }) {
             icon={BadgeDollarSign}
             title="Price Range"
             open={openSections.price}
-            toggle={() => toggleSection("price")}
+            toggle={() => toggle("price")}
           />
           {openSections.price && (
             <div className="space-y-3">
               <input
                 type="range"
-                min={filters.absoluteMin}
-                max={filters.absoluteMax}
-                value={filters.maxPrice}
+                min={absoluteMin}
+                max={absoluteMax}
+                value={filters.maxPrice ?? absoluteMax}
                 onChange={(e) =>
                   onChange({ ...filters, maxPrice: Number(e.target.value) })
                 }
                 className="w-full price-range"
               />
               <div className="flex justify-between text-xs text-primary font-medium">
-                <span>৳ {filters.absoluteMin.toLocaleString()}</span>
+                <span>৳ {absoluteMin.toLocaleString()}</span>
                 <span className="text-primary font-bold">
-                  ৳ {filters.maxPrice.toLocaleString()}
+                  ৳ {(filters.maxPrice ?? absoluteMax).toLocaleString()}
                 </span>
               </div>
             </div>
@@ -113,179 +152,158 @@ export default function FilterSidebar({ filters, onChange, onReset }) {
 
         <div className="h-px bg-slate-100" />
 
-        {/* Stops */}
-        <div>
-          <SectionHeader
-            icon={Plane}
-            title="Stops"
-            open={openSections.stops}
-            toggle={() => toggleSection("stops")}
-          />
-          {openSections.stops && (
-            <div className="space-y-2">
-              {[
-                { value: "direct", label: "Direct Flight", sub: "Non-stop" },
-                { value: "1stop", label: "1 Stop", sub: "Via connecting" },
-              ].map((item) => (
-                <label
-                  key={item.value}
-                  className={`flex items-center justify-between px-3 py-2.5 rounded-xl border cursor-pointer transition-all ${
-                    filters.stops.includes(item.value)
-                      ? "border-blue-400 bg-blue-50"
-                      : "border-slate-100 hover:border-blue-200 hover:bg-slate-50"
-                  }`}
-                >
-                  <div>
-                    <p className="text-xs font-semibold text-slate-700">
-                      {item.label}
-                    </p>
-                    <p className="text-[10px] text-slate-400">{item.sub}</p>
-                  </div>
-                  <input
-                    type="checkbox"
-                    className="accent-blue-500 w-4 h-4"
-                    checked={filters.stops.includes(item.value)}
-                    onChange={() => toggleArrayItem("stops", item.value)}
-                  />
-                </label>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <div className="h-px bg-slate-100" />
-
-        {/* Baggage */}
-        <div>
-          <SectionHeader
-            icon={Luggage}
-            title="Baggage"
-            open={openSections.baggage}
-            toggle={() => toggleSection("baggage")}
-          />
-          {openSections.baggage && (
-            <div className="space-y-2">
-              {["20 kg", "30 kg"].map((kg) => (
-                <label
-                  key={kg}
-                  className={`flex items-center gap-3 px-3 py-2 rounded-xl border cursor-pointer transition-all ${
-                    filters.baggage.includes(kg)
-                      ? "border-blue-400 bg-blue-50"
-                      : "border-slate-100 hover:border-blue-200"
-                  }`}
-                >
-                  <input
-                    type="checkbox"
-                    className="accent-blue-500 w-4 h-4"
-                    checked={filters.baggage.includes(kg)}
-                    onChange={() => toggleArrayItem("baggage", kg)}
-                  />
-                  <span className="text-xs font-semibold text-slate-700">
-                    {kg}
-                  </span>
-                </label>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <div className="h-px bg-slate-100" />
-
-        {/* Departure Timing */}
+        {/* Departure Time */}
         <div>
           <SectionHeader
             icon={Clock}
             title="Departure Time"
             open={openSections.departure}
-            toggle={() => toggleSection("departure")}
+            toggle={() => toggle("departure")}
           />
           {openSections.departure && (
             <div className="grid grid-cols-2 gap-2">
-              {timeSlots.map((slot) => (
-                <button
-                  key={slot.value}
-                  onClick={() => toggleArrayItem("departureSlots", slot.value)}
-                  className={`text-left px-2.5 py-2 rounded-xl border text-[10px] transition-all ${
-                    filters.departureSlots.includes(slot.value)
-                      ? "border-blue-400 bg-blue-50 text-blue-700"
-                      : "border-slate-100 hover:border-blue-200 text-slate-600"
-                  }`}
-                >
-                  <p className="font-bold leading-tight">{slot.label}</p>
-                  <p className="text-slate-400 mt-0.5">{slot.range}</p>
-                </button>
-              ))}
+              {TIME_SLOTS.map((slot) => {
+                const active = (filters.departureSlots ?? []).includes(
+                  slot.value,
+                );
+                return (
+                  <button
+                    key={slot.value}
+                    onClick={() => toggleArray("departureSlots", slot.value)}
+                    className={`text-left px-2.5 py-2 rounded-xl border text-[10px] transition-all ${
+                      active
+                        ? "border-blue-400 bg-blue-50 text-blue-700"
+                        : "border-slate-100 hover:border-blue-200 text-slate-600"
+                    }`}
+                  >
+                    <p className="font-bold leading-tight">{slot.label}</p>
+                    <p className="text-slate-400 mt-0.5">{slot.range}</p>
+                  </button>
+                );
+              })}
             </div>
           )}
         </div>
 
         <div className="h-px bg-slate-100" />
 
-        {/* Arrival Timing */}
+        {/* Arrival Time */}
         <div>
           <SectionHeader
             icon={Clock}
             title="Arrival Time"
             open={openSections.arrival}
-            toggle={() => toggleSection("arrival")}
+            toggle={() => toggle("arrival")}
           />
           {openSections.arrival && (
             <div className="grid grid-cols-2 gap-2">
-              {timeSlots.map((slot) => (
-                <button
-                  key={slot.value}
-                  onClick={() => toggleArrayItem("arrivalSlots", slot.value)}
-                  className={`text-left px-2.5 py-2 rounded-xl border text-[10px] transition-all ${
-                    filters.arrivalSlots.includes(slot.value)
-                      ? "border-blue-400 bg-blue-50 text-blue-700"
-                      : "border-slate-100 hover:border-blue-200 text-slate-600"
-                  }`}
-                >
-                  <p className="font-bold leading-tight">{slot.label}</p>
-                  <p className="text-slate-400 mt-0.5">{slot.range}</p>
-                </button>
-              ))}
+              {TIME_SLOTS.map((slot) => {
+                const active = (filters.arrivalSlots ?? []).includes(
+                  slot.value,
+                );
+                return (
+                  <button
+                    key={slot.value}
+                    onClick={() => toggleArray("arrivalSlots", slot.value)}
+                    className={`text-left px-2.5 py-2 rounded-xl border text-[10px] transition-all ${
+                      active
+                        ? "border-blue-400 bg-blue-50 text-blue-700"
+                        : "border-slate-100 hover:border-blue-200 text-slate-600"
+                    }`}
+                  >
+                    <p className="font-bold leading-tight">{slot.label}</p>
+                    <p className="text-slate-400 mt-0.5">{slot.range}</p>
+                  </button>
+                );
+              })}
             </div>
           )}
         </div>
 
         <div className="h-px bg-slate-100" />
 
-        {/* Airlines */}
-        <div>
-          <SectionHeader
-            icon={Plane}
-            title="Airlines"
-            open={openSections.airlines}
-            toggle={() => toggleSection("airlines")}
-          />
-          {openSections.airlines && (
-            <div className="space-y-2">
-              {airlines.map((airline) => (
-                <label
-                  key={airline.value}
-                  className={`flex items-center gap-3 px-3 py-2 rounded-xl border cursor-pointer transition-all ${
-                    filters.selectedAirlines.includes(airline.value)
-                      ? "border-blue-400 bg-blue-50"
-                      : "border-slate-100 hover:border-blue-200"
-                  }`}
-                >
-                  <input
-                    type="checkbox"
-                    className="accent-blue-500 w-4 h-4"
-                    checked={filters.selectedAirlines.includes(airline.value)}
-                    onChange={() =>
-                      toggleArrayItem("selectedAirlines", airline.value)
-                    }
-                  />
-                  <span className="text-xs font-semibold text-slate-700">
-                    {airline.label}
-                  </span>
-                </label>
-              ))}
+        {/* Aircraft */}
+        {aircraftModels.length > 0 && (
+          <>
+            <div>
+              <SectionHeader
+                icon={Plane}
+                title="Aircraft"
+                open={openSections.aircraft}
+                toggle={() => toggle("aircraft")}
+              />
+              {openSections.aircraft && (
+                <div className="space-y-2">
+                  {aircraftModels.map((model) => {
+                    const active = (filters.aircraftModels ?? []).includes(
+                      model,
+                    );
+                    return (
+                      <label
+                        key={model}
+                        className={`flex items-center gap-3 px-3 py-2 rounded-xl border cursor-pointer transition-all ${
+                          active
+                            ? "border-blue-400 bg-blue-50"
+                            : "border-slate-100 hover:border-blue-200"
+                        }`}
+                      >
+                        <input
+                          type="checkbox"
+                          className="accent-blue-500 w-4 h-4"
+                          checked={active}
+                          onChange={() => toggleArray("aircraftModels", model)}
+                        />
+                        <span className="text-xs font-semibold text-slate-700">
+                          {model}
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+              )}
             </div>
-          )}
-        </div>
+            <div className="h-px bg-slate-100" />
+          </>
+        )}
+
+        {/* Status */}
+        {statuses.length > 0 && (
+          <div>
+            <SectionHeader
+              icon={Plane}
+              title="Flight Status"
+              open={openSections.status}
+              toggle={() => toggle("status")}
+            />
+            {openSections.status && (
+              <div className="space-y-2">
+                {statuses.map((s) => {
+                  const active = (filters.statuses ?? []).includes(s);
+                  return (
+                    <label
+                      key={s}
+                      className={`flex items-center gap-3 px-3 py-2 rounded-xl border cursor-pointer transition-all capitalize ${
+                        active
+                          ? "border-blue-400 bg-blue-50"
+                          : "border-slate-100 hover:border-blue-200"
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        className="accent-blue-500 w-4 h-4"
+                        checked={active}
+                        onChange={() => toggleArray("statuses", s)}
+                      />
+                      <span className="text-xs font-semibold text-slate-700 capitalize">
+                        {s}
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </aside>
   );

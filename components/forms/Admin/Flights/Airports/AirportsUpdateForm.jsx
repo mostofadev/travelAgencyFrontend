@@ -3,7 +3,7 @@ import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import { useAirportsById, useUpdateAirports } from "@/hooks/Admin/useAirports";
-import { useVisaFormCountries } from "@/hooks/Admin/useFormServices";
+import { useVisaFormCountries } from "@/hooks/Admin/useForm";
 import { airportsUpdateValidation } from "@/lib/validations/Admin/apiportsUpdateValidation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft } from "lucide-react";
@@ -12,18 +12,20 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-function AirportsUpdateForm({ airportsId }) {
-  console.log('aip',airportsId);
-  
+function AirportsUpdateForm({ id }) {
   const router = useRouter();
 
-const { data: airportData, isLoading: airportLoading } = useAirportsById({ id: airportsId });
-  const { data: countriesData, isLoading: countriesLoading } = useVisaFormCountries();
+  const { data: airportData, isLoading: airportLoading } = useAirportsById({
+    id,
+  });
+
+  const { data: countriesData, isLoading: countriesLoading } =
+    useVisaFormCountries();
+
   const { mutate, isPending } = useUpdateAirports();
 
   const airport = airportData?.data;
-  console.log('air data',airport);
-  
+
   const countryOptions =
     countriesData?.data?.map((country) => ({
       value: String(country.id),
@@ -47,7 +49,6 @@ const { data: airportData, isLoading: airportLoading } = useAirportsById({ id: a
       timezone: "",
       latitude: "",
       longitude: "",
-   //   is_active: "1",
     },
   });
 
@@ -63,14 +64,13 @@ const { data: airportData, isLoading: airportLoading } = useAirportsById({ id: a
         timezone: airport.timezone ?? "",
         latitude: airport.latitude ?? "",
         longitude: airport.longitude ?? "",
-        // is_active: String(airport.is_active ?? "1"),
       });
     }
   }, [airport, reset]);
 
   const onSubmit = (data) => {
     const formData = new FormData();
-    formData.append("_method", "PUT"); 
+    formData.append("_method", "PUT");
     formData.append("code", data.code);
     formData.append("name", data.name);
     formData.append("country_id", data.country_id);
@@ -79,10 +79,10 @@ const { data: airportData, isLoading: airportLoading } = useAirportsById({ id: a
     if (data.timezone) formData.append("timezone", data.timezone);
     if (data.latitude) formData.append("latitude", data.latitude);
     if (data.longitude) formData.append("longitude", data.longitude);
-   // formData.append("is_active", data.is_active);
+    // formData.append("is_active", data.is_active);
 
     mutate(
-      { id: airportsId, data: formData },
+      { id, data: formData },
       {
         onSuccess: () => {
           router.push("/admin/flights/airports");
@@ -97,7 +97,7 @@ const { data: airportData, isLoading: airportLoading } = useAirportsById({ id: a
             });
           }
         },
-      }
+      },
     );
   };
 
@@ -129,7 +129,6 @@ const { data: airportData, isLoading: airportLoading } = useAirportsById({ id: a
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="p-6 space-y-6">
-
             {/* Code & Name */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Input
@@ -203,19 +202,7 @@ const { data: airportData, isLoading: airportLoading } = useAirportsById({ id: a
               />
             </div>
 
-            {/* Status */}
-            {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Select
-                label="Status *"
-                placeholder="Select status"
-                options={[
-                  { value: "1", label: "Active" },
-                  { value: "0", label: "Inactive" },
-                ]}
-                {...register("is_active")}
-                error={errors.is_active?.message}
-              />
-            </div> */}
+            
 
             {/* Actions */}
             <div className="flex flex-col sm:flex-row justify-end gap-4">
@@ -237,7 +224,6 @@ const { data: airportData, isLoading: airportLoading } = useAirportsById({ id: a
                 {isPending ? "Updating..." : "Update Airport"}
               </Button>
             </div>
-
           </div>
         </div>
       </form>

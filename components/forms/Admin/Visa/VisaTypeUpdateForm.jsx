@@ -22,7 +22,6 @@ function VisaTypeUpdateForm() {
     setValue,
   } = useForm();
 
-  // Fetch visa type data
   const { data: visaType, isLoading } = useVisaType(id);
 
   const { mutateAsync, isPending } = useUpdateVisaType();

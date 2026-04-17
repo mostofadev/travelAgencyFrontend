@@ -8,7 +8,7 @@ import SliderDots from "./SliderDots";
 import SliderArrows from "./SliderArrows";
 import ProgressBar from "./ProgressBar";
 import { bannerSlides } from "./bannerSlides";
-import FilterBox from "../../filter/FilterBox";
+import FilterBox from "../../../ui/filter/FilterBox";
 
 const SLIDE_DURATION = 5000;
 
@@ -17,7 +17,6 @@ export default function HeroBanner() {
   const [paused, setPaused] = useState(false);
   const [contentVisible, setContentVisible] = useState(true);
 
-  // ✅ Responsive state
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -182,7 +181,7 @@ export default function HeroBanner() {
           </div>
         </section>
 
-        {/* ✅ Responsive FilterBox */}
+        {/*  Responsive FilterBox */}
         <div
           style={{
             position: "absolute",

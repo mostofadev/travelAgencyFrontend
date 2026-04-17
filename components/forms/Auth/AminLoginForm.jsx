@@ -8,7 +8,7 @@ import adminLoginSchema from "@/lib/validations/adminLoginSchema";
 import useAdminAuth from "@/hooks/useAdminAuth";
 
 export default function AdminLoginForm() {
-  const { login , isLoading} = useAdminAuth();
+  const { login, isLoading } = useAdminAuth();
   const {
     register,
     handleSubmit,
@@ -46,8 +46,8 @@ export default function AdminLoginForm() {
                 />
               </svg>
             </div>
-            <h2 className="text-3xl font-bold text-gray-900">স্বাগতম! 👋</h2>
-            <p className="text-gray-600 mt-2">আপনার একাউন্টে লগইন করুন</p>
+            <h2 className="text-3xl font-bold text-gray-900">Welcome!</h2>
+            <p className="text-gray-600 mt-2">Sign in to your account</p>
           </div>
 
           {/* Form */}
@@ -55,7 +55,7 @@ export default function AdminLoginForm() {
             {/* Email */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                ইমেইল অ্যাড্রেস
+                Email Address
               </label>
               <input
                 {...register("email")}
@@ -69,7 +69,7 @@ export default function AdminLoginForm() {
               />
               {errors.email && (
                 <p className="text-red-500 text-sm mt-1 flex items-center">
-                  <span className="mr-1">⚠️</span>
+                  <span className="mr-1"></span>
                   {errors.email.message}
                 </p>
               )}
@@ -78,7 +78,7 @@ export default function AdminLoginForm() {
             {/* Password */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                পাসওয়ার্ড
+                Password
               </label>
               <input
                 {...register("password")}
@@ -92,7 +92,7 @@ export default function AdminLoginForm() {
               />
               {errors.password && (
                 <p className="text-red-500 text-sm mt-1 flex items-center">
-                  <span className="mr-1">⚠️</span>
+                  <span className="mr-1"></span>
                   {errors.password.message}
                 </p>
               )}
@@ -126,10 +126,10 @@ export default function AdminLoginForm() {
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     ></path>
                   </svg>
-                  লগইন হচ্ছে...
+                  Signing in...
                 </>
               ) : (
-                "লগইন করুন"
+                "Sign In"
               )}
             </button>
           </form>
@@ -137,12 +137,12 @@ export default function AdminLoginForm() {
           {/* Footer */}
           <div className="mt-6 text-center">
             <p className="text-gray-600">
-              একাউন্ট নেই?{" "}
+              Don&apos;t have an account?{" "}
               <Link
                 href="/register"
                 className="text-blue-600 hover:text-blue-700 font-semibold"
               >
-                রেজিস্টার করুন
+                Register
               </Link>
             </p>
           </div>
@@ -150,7 +150,7 @@ export default function AdminLoginForm() {
 
         {/* Additional Info */}
         <p className="text-center text-sm text-gray-600 mt-4">
-          🔒 আপনার তথ্য সম্পূর্ণ নিরাপদ এবং এনক্রিপ্টেড
+          🔒 Your information is completely safe and encrypted
         </p>
       </div>
     </div>

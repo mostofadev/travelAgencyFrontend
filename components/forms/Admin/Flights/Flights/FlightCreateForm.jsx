@@ -24,10 +24,9 @@ const flightsCreateValidation = z.object({
 
 const STATUS_OPTIONS = [
   { value: "scheduled", label: "Scheduled" },
-  { value: "departed", label: "Departed" },
-  { value: "arrived", label: "Arrived" },
   { value: "delayed", label: "Delayed" },
   { value: "cancelled", label: "Cancelled" },
+  { value: "completed", label: "completed" },
 ];
 
 function FlightsCreateForm() {
@@ -75,11 +74,9 @@ function FlightsCreateForm() {
 
       mutate(formData, {
         onSuccess: (response) => {
-          console.log("Success response:", response);
           router.push("/admin/flights");
         },
         onError: (error) => {
-          console.error("Error response:", error);
           if (error.response?.status === 422) {
             const serverErrors = error.response?.data?.errors || {};
             Object.keys(serverErrors).forEach((field) => {
@@ -92,7 +89,7 @@ function FlightsCreateForm() {
         },
       });
     } catch (error) {
-      console.error("Submit error:", error);
+      
     }
   };
 

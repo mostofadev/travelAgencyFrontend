@@ -1,11 +1,10 @@
 "use client";
 
 import Button from "@/components/ui/Button";
-// components/TourPackageCard.jsx
 
 import Link from "next/link";
 
-// ── Icons ─────────────────────────────────────────────────────
+// ── Icons 
 const IconArrow = () => (
   <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 16 16"
     className="transition-transform duration-300 group-hover/btn:translate-x-1"
@@ -64,7 +63,7 @@ const STATUS_COLORS = {
   default:   { bg: "#f1f5f9", text: "#475569" },
 };
 
-// ── Detail Pill ───────────────────────────────────────────────
+// ── Detail Pill 
 function Pill({ icon, label, value }) {
   if (!value) return null;
   return (
@@ -84,16 +83,16 @@ function Pill({ icon, label, value }) {
   );
 }
 
-// ── Format date ───────────────────────────────────────────────
+// ── Format date 
 function fmtDate(iso) {
   if (!iso) return null;
   return new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
 }
 
-// ── Main Card ─────────────────────────────────────────────────
+// ── Main Card 
 export default function TourPackageCard({ pkg }) {
   const {
-    slug,
+    id,
     package_code,
     package_title,
     package_type,
@@ -429,15 +428,8 @@ export default function TourPackageCard({ pkg }) {
 
           {/* Actions */}
           <div className="tour-card__price-actions">
-            <Button href={`/tour/${slug}`}>Book Now</Button>
-            <Link
-              href={`/tour/${slug}`}
-              className="text-sm font-semibold text-primary"
-              onMouseEnter={e => e.currentTarget.style.color = "#4f46e5"}
-              onMouseLeave={e => e.currentTarget.style.color = "#6366f1"}
-            >
-              View Details →
-            </Link>
+            <Button href={`/tour/${id}`}>View Details →</Button>
+          
           </div>
         </div>
       </div>

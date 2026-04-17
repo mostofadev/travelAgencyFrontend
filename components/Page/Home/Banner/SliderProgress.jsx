@@ -1,14 +1,5 @@
 "use client";
 
-// components/banner/SliderProgress.jsx
-// ─────────────────────────────────────────────────────────────────────────────
-// প্রতিটি slide এর জন্য একটি progress bar।
-// Slide active হলে bar টি ভরে যায় (duration শেষে next slide চলে যায়)।
-// Props:
-//   isActive   → এই slide টি এখন চলছে কিনা
-//   duration   → কত ms এ bar শেষ হবে (default 5000ms)
-//   accentHex  → bar এর color
-// ─────────────────────────────────────────────────────────────────────────────
 
 import { useEffect, useState } from "react";
 
@@ -17,10 +8,10 @@ export default function SliderProgress({ isActive, duration = 5000, accentHex })
 
   useEffect(() => {
     // Reset
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setWidth(0);
     if (!isActive) return;
 
-    // Double RAF — browser কে layout করার সুযোগ দেই তারপর animate করি
     const raf = requestAnimationFrame(() =>
       requestAnimationFrame(() => setWidth(100))
     );

@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,24 +8,37 @@ import { z } from "zod";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import { useAuth } from "@/hooks/AuthUser";
+import { useSearchParams } from "next/navigation";
 
+//  Validation Schema 
 const loginSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
+//  Captcha Generator 
 function makeCaptcha() {
   const a = Math.floor(Math.random() * 9) + 1;
   const b = Math.floor(Math.random() * 9) + 1;
   return { a, b };
 }
 
+//  UserLoginForm Component 
 export default function UserLoginForm() {
   const { login, isLoginLoading } = useAuth();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect");
 
-  const [captcha, setCaptcha] = useState({ a: 4, b: 3 });
+  //  State 
+  const [captcha, setCaptcha] = useState(makeCaptcha());
   const [captchaAnswer, setCaptchaAnswer] = useState("");
   const [captchaError, setCaptchaError] = useState("");
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsClient(true);
+  }, []);
 
   const {
     register,
@@ -41,7 +55,12 @@ export default function UserLoginForm() {
       setCaptchaAnswer("");
       return;
     }
-    login({ email: data.email, password: data.password });
+
+    login({
+      email: data.email,
+      password: data.password,
+      redirect: redirect || null, 
+    });
   };
 
   return (
@@ -51,6 +70,7 @@ export default function UserLoginForm() {
       </h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        {/* Email Input */}
         <Input
           type="email"
           label="Email"
@@ -60,6 +80,7 @@ export default function UserLoginForm() {
           required
         />
 
+        {/* Password Input */}
         <Input
           type="password"
           label="Password"
@@ -73,9 +94,11 @@ export default function UserLoginForm() {
         <div className="space-y-1">
           <label className="block text-sm font-medium text-gray-700">
             Verify:{" "}
-            <span className="font-bold text-blue-600">
-              {captcha.a} + {captcha.b}
-            </span>{" "}
+            {isClient && (
+              <span className="font-bold text-blue-600">
+                {captcha.a} + {captcha.b}
+              </span>
+            )}{" "}
             = ?
           </label>
           <div className="flex gap-2">
@@ -106,17 +129,20 @@ export default function UserLoginForm() {
           )}
         </div>
 
+        {/* Submit Button */}
         <Button type="submit" fullWidth loading={isLoginLoading}>
           Log In
         </Button>
       </form>
 
+      {/* Forgot Password */}
       <div className="text-right text-[12px] my-3">
         <Link href="/forgot-password" className="text-blue-600 hover:underline">
           Forgot Password?
         </Link>
       </div>
 
+      {/* Register Link */}
       <p className="mt-4 text-center text-sm text-gray-600">
         Don&apos;t have an account?{" "}
         <Link href="/register" className="text-blue-600 hover:underline">

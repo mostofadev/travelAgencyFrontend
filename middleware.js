@@ -8,7 +8,7 @@ export function middleware(request) {
 
   // ================= ALREADY LOGGED IN =================
   if (pathname === "/login" && userToken) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    return NextResponse.redirect(new URL("/user/dashboard", request.url));
   }
 
   if (pathname === "/admin-login" && adminToken) {
@@ -16,10 +16,7 @@ export function middleware(request) {
   }
 
   // ================= USER PROTECTED ROUTES =================
-  if (
-    (pathname.startsWith("/dashboard") || pathname.startsWith("/profile")) &&
-    !userToken
-  ) {
+  if (pathname.startsWith("/user") && !userToken) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
@@ -36,11 +33,5 @@ export function middleware(request) {
 }
 
 export const config = {
-  matcher: [
-    "/dashboard/:path*",
-    "/profile/:path*",
-    "/admin/:path*",
-    "/login",
-    "/admin-login",
-  ],
+  matcher: ["/user/:path*", "/admin/:path*", "/login", "/admin-login"],
 };

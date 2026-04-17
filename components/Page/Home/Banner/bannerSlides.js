@@ -1,9 +1,3 @@
-// data/bannerSlides.js
-// ─────────────────────────────────────────────────────────────────────────────
-// Banner slider এর সব slide data এখানে।
-// image, title, description, badge, accentHex — এই ৫টি field ব্যবহার হয়।
-// ─────────────────────────────────────────────────────────────────────────────
-
 export const bannerSlides = [
   {
     id: 1,
@@ -23,7 +17,7 @@ export const bannerSlides = [
       "Pristine overwater bungalows, crystal-clear lagoons and breathtaking coral reefs await you in paradise.",
     accentHex: "#38BDF8",
     image:
-      "https://images.unsplash.com/photo-1573843981267-be1ceee3a0d5?w=1600&q=80",
+      "https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=1600&q=80",
   },
   {
     id: 3,

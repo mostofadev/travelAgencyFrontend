@@ -85,7 +85,6 @@ function TourPackageUpdateForm({ packageId }) {
     if (packageData?.data && !isFormInitialized) {
       const pkg = packageData.data;
 
-      console.log("📦 Initializing form with package data:", pkg);
 
       // Prepare itineraries data
       const formattedItineraries =
@@ -126,15 +125,13 @@ function TourPackageUpdateForm({ packageId }) {
         itineraries: formattedItineraries,
       });
 
-      console.log("✅ Form initialized successfully");
-      console.log("🖼️ Image URL:", pkg.image_url);
+   
 
       // Mark form as initialized
       setIsFormInitialized(true);
     }
   }, [packageData, isFormInitialized, reset]);
 
-  // ✅ Cleanup image preview URL
   useEffect(() => {
     return () => {
       if (imageFile) {
@@ -164,7 +161,6 @@ function TourPackageUpdateForm({ packageId }) {
       label: country.name,
     })) || [];
 
-  // ✅ Handle image change
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
@@ -173,15 +169,12 @@ function TourPackageUpdateForm({ packageId }) {
     }
   };
 
-  // ✅ Remove new image and revert to original
   const handleRemoveImage = () => {
     setImageFile(null);
     setValue("image", null);
   };
 
   const onSubmit = async (data) => {
-    console.log("📤 Submitting form data:", data);
-
     try {
       const formData = new FormData();
 
@@ -214,7 +207,6 @@ function TourPackageUpdateForm({ packageId }) {
       // Image (only if new image selected)
       if (imageFile) {
         formData.append("image", imageFile);
-        console.log("🖼️ New image attached:", imageFile.name);
       }
 
       formData.append("_method", "PUT");
@@ -248,15 +240,10 @@ function TourPackageUpdateForm({ packageId }) {
               itinerary.meals || "",
             );
           });
-          console.log(`📋 ${validItineraries.length} itineraries attached`);
         }
       }
 
-      // Debug: Log FormData
-      console.log("=== FormData Contents ===");
-      for (let pair of formData.entries()) {
-        console.log(pair[0] + ":", pair[1]);
-      }
+      
 
       // Submit
       mutate(
@@ -298,7 +285,7 @@ function TourPackageUpdateForm({ packageId }) {
         },
       );
     } catch (error) {
-      console.error("Submit error:", error);
+      
     }
   };
 
@@ -326,7 +313,6 @@ function TourPackageUpdateForm({ packageId }) {
     );
   }
 
-  // ✅ No data state
   if (!packageData?.data) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">

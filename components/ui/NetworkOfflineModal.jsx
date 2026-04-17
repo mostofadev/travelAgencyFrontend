@@ -1,4 +1,3 @@
-// components/ui/NetworkOfflineModal.jsx
 "use client";
 
 import { WifiOff } from "lucide-react";
