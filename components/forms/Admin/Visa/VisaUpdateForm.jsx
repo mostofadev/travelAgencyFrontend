@@ -17,11 +17,12 @@ import Checkbox from "@/components/ui/Checkbox";
 
 // Import hooks
 import { useVisa, useUpdateVisa } from "@/hooks/Admin/useVisa";
-import {
-  useVisaFormCountries,
-  useVisaFormTypes,
-} from "@/hooks/Admin/useFormServices";
+// import {
+//   useVisaFormCountries,
+//   useVisaFormTypes,
+// } from "@/hooks/Admin/useFormServices";
 import visaValidationSchema from "@/lib/validations/Admin/visaValidation";
+import { useVisaFormCountries, useVisaFormTypes } from "@/hooks/Admin/useForm";
 
 function VisaUpdateForm({ visaId }) {
   const router = useRouter();
