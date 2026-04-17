@@ -1,13 +1,15 @@
-"use client"
-import UserLoginForm from '@/components/forms/Auth/UserLoginForm'
-import React from 'react'
+"use client";
+import UserLoginForm from "@/components/forms/Auth/UserLoginForm";
+import React, { Suspense } from "react";
 
 function page() {
   return (
     <div>
-      <UserLoginForm />
+      <Suspense fallback={<div>Loading...</div>}>
+        <UserLoginForm />
+      </Suspense>
     </div>
-  )
+  );
 }
 
-export default page
+export default page;
