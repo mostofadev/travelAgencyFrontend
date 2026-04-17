@@ -1,12 +1,11 @@
 import { NextResponse } from "next/server";
 
-export function middleware(request) {
+export function proxy(request) {
   const { pathname } = request.nextUrl;
 
   const userToken = request.cookies.get("user_jwt_token")?.value;
   const adminToken = request.cookies.get("admin_jwt_token")?.value;
 
-  // ================= ALREADY LOGGED IN =================
   if (pathname === "/login" && userToken) {
     return NextResponse.redirect(new URL("/user/dashboard", request.url));
   }
@@ -15,12 +14,10 @@ export function middleware(request) {
     return NextResponse.redirect(new URL("/admin/dashboard", request.url));
   }
 
-  // ================= USER PROTECTED ROUTES =================
   if (pathname.startsWith("/user") && !userToken) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  // ================= ADMIN PROTECTED ROUTES =================
   if (
     pathname.startsWith("/admin") &&
     pathname !== "/admin-login" &&
