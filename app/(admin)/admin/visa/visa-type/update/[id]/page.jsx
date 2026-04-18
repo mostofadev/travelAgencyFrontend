@@ -1,12 +1,17 @@
-import VisaTypeUpdateForm from '@/components/forms/Admin/Visa/VisaTypeUpdateForm'
-import React from 'react'
+"use client";
+import { Suspense } from "react";
+import VisaTypeUpdateForm from "@/components/forms/Admin/Visa/VisaTypeUpdateForm";
 
-function page() {
+export default function Page() {
   return (
-    <div>
-      <VisaTypeUpdateForm />
-    </div>
-  )
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center min-h-screen" />
+      }
+    >
+      <div>
+        <VisaTypeUpdateForm />
+      </div>
+    </Suspense>
+  );
 }
-
-export default page

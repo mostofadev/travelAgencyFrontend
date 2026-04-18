@@ -9,7 +9,6 @@ import { useHomePageTour } from "@/hooks/Page/useHome";
 export default function HomePage() {
   const [isMobile, setIsMobile] = useState(false);
   const { data, isLoading } = useHomePageTour();
-  console.log("tour", data);
   const tours = data?.data;
   useEffect(() => {
     const handleResize = () => {

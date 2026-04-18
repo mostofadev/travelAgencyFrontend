@@ -1,16 +1,28 @@
-"use client"
-import AirportsUpdateForm from '@/components/forms/Admin/Flights/Airports/AirportsUpdateForm';
-import { useParams } from 'next/navigation';
-import React from 'react'
+"use client";
+import { Suspense } from "react";
+import { Loader2 } from "lucide-react";
+import AirportsUpdateForm from "@/components/forms/Admin/Flights/Airports/AirportsUpdateForm";
+import { useParams } from "next/navigation";
 
-function Page() {
-   const { id } = useParams();
-   
+function Content() {
+  const { id } = useParams();
   return (
     <div>
       <AirportsUpdateForm id={id} />
     </div>
-  )
+  );
 }
 
-export default Page
+export default function Page() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center min-h-screen">
+          <Loader2 size={20} className="animate-spin text-slate-400" />
+        </div>
+      }
+    >
+      <Content />
+    </Suspense>
+  );
+}

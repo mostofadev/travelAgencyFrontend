@@ -1,17 +1,28 @@
 "use client";
-import VisaUpdateForm from '@/components/forms/Admin/Visa/VisaUpdateForm'
-import { useParams } from 'next/navigation';
-import React from 'react'
+import { Suspense } from "react";
+import { Loader2 } from "lucide-react";
+import VisaUpdateForm from "@/components/forms/Admin/Visa/VisaUpdateForm";
+import { useParams } from "next/navigation";
 
- function Page() {
-  
+function Content() {
   const { id } = useParams();
-  
   return (
     <div>
       <VisaUpdateForm visaId={id} />
     </div>
-  )
+  );
 }
 
-export default Page
+export default function Page() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center min-h-screen">
+          <Loader2 size={20} className="animate-spin text-slate-400" />
+        </div>
+      }
+    >
+      <Content />
+    </Suspense>
+  );
+}
