@@ -86,7 +86,7 @@ export default function FlightBookingForm({
 
 
   return (
-    <form onSubmit={handleSubmit(onSubmit, onInvalid)} className="space-y-3">
+    <form onSubmit={handleSubmit(onSubmit, oninvalid)} className="space-y-3">
       {/* Passenger Accordions */}
       {passengerTypes.map((type, index) => (
         <PassengerAccordion
