@@ -9,6 +9,8 @@ export default function FareSummary({
   infants,
   fareData = {},
 }) {
+  console.log('fareData',fareData);
+  
   const [open, setOpen] = useState(true);
 
   const types = [

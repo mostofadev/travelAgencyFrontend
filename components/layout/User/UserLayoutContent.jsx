@@ -35,16 +35,16 @@ const navigation = [
     href: "/user/tour/booking",
   },
   { name: "Deposit", icon: LayoutDashboard, href: "/user/deposit" },
-  {
-    name: "Settings",
-    icon: Settings,
-    submenu: [
-      { name: "General", icon: Settings, href: "" },
-      { name: "Profile", icon: UserCheck, href: "" },
-      { name: "Notifications", icon: Bell, href: "" },
-      { name: "Security", icon: Eye, href: "" },
-    ],
-  },
+  // {
+  //   name: "Settings",
+  //   icon: Settings,
+  //   submenu: [
+  //     { name: "General", icon: Settings, href: "" },
+  //     { name: "Profile", icon: UserCheck, href: "" },
+  //     { name: "Notifications", icon: Bell, href: "" },
+  //     { name: "Security", icon: Eye, href: "" },
+  //   ],
+  // },
 ];
 
 function checkActiveRoute(pathname, href) {

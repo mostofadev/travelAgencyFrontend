@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import Button from "@/components/ui/Button";
 
-// ── Status colours 
+// ── Status colours
 const STATUS_COLORS = {
   scheduled: "bg-emerald-100 text-emerald-800",
   delayed: "bg-yellow-100 text-yellow-800",
@@ -28,7 +28,7 @@ const STATUS_COLORS = {
   default: "bg-slate-100 text-slate-600",
 };
 
-// ── Class tab colours 
+// ── Class tab colours
 const CLASS_TAB = {
   Economy: {
     active: "bg-blue-600 text-white border-blue-600",
@@ -61,7 +61,7 @@ function fmtPrice(amount) {
   return `৳ ${Number(amount).toLocaleString("en-BD")}`;
 }
 
-// ── Passenger counter row 
+// ── Passenger counter row
 function PassengerRow({
   icon: Icon,
   label,
@@ -112,7 +112,7 @@ function PassengerRow({
   );
 }
 
-// ── Main component 
+// ── Main component
 export default function FlightCard({ flight }) {
   const router = useRouter();
 
@@ -157,7 +157,38 @@ export default function FlightCard({ flight }) {
 
   function handleContinue() {
     if (!activeClass?.id) return;
+    // ── localStorage এ save ──
+    const bookingData = {
+      flightId: flight.id,
+      flightClassId: activeClass.id,
+      flightClassName: activeClass.class_name,
 
+      adults,
+      children,
+      infants,
+
+      fareData: {
+        adult: {
+          visa_fee: activeClass.base_fare ?? 0,
+          service_charge: 0,
+        },
+        child: {
+          visa_fee: activeClass.base_fare ?? 0,
+          service_charge: 0,
+        },
+        infant: {
+          visa_fee: activeClass.base_fare ?? 0,
+          service_charge: 0,
+        },
+      },
+
+      currency: "BDT",
+      flight_number: flight_number,
+      from: from_airport?.code,
+      to: to_airport?.code,
+    };
+
+    localStorage.setItem("flight_booking_data", JSON.stringify(bookingData));
     const params = new URLSearchParams({
       flight_class_id: activeClass.id,
       adults,

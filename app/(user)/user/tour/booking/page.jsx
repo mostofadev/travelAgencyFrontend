@@ -12,7 +12,7 @@ export default function TourBookingsPage() {
   const [page, setPage] = useState(1);
 
   const { data: response, isLoading } = useTourBookings(page);
-
+  
   const bookings = Array.isArray(response?.data?.data)
     ? response.data.data 
     : Array.isArray(response?.data)

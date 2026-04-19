@@ -37,13 +37,7 @@ export default function FlightBookingContent() {
 
   if (!flightClassId) redirect("/flight");
 
-  const fareData = bookingData?.fareData
-    ? {
-        adult: { price: bookingData.fareData.adult || 0 },
-        child: { price: bookingData.fareData.child || 0 },
-        infant: { price: bookingData.fareData.infant || 0 },
-      }
-    : {};
+  const fareData = bookingData?.fareData ?? {};
 
   const totalPassengers = adults + children + infants;
 

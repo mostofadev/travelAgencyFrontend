@@ -185,7 +185,7 @@ export default function HeroBanner() {
         <div
           style={{
             position: "absolute",
-            bottom: 0,
+            bottom: -10,
             left: 0,
             right: 0,
             zIndex: 30,

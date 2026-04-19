@@ -207,6 +207,7 @@ export default function FlightPageContent() {
   }, [flights, sidebarFilters, effectiveMaxPrice, isLoading]);
 
   const handleSearch = (newFilters) => {
+    
     const params = new URLSearchParams(
       Object.fromEntries(
         Object.entries(newFilters).filter(([, v]) => v !== undefined),

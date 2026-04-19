@@ -3,6 +3,7 @@
 
 import TourDetailPage from "@/components/Page/TourPackage/TourDetailPage";
 import Section from "@/components/ui/Section";
+import TourDetailSkeleton from "@/components/ui/Skeleton/TourDetailSkeleton";
 import {
   usePageTourPackageById,
   useTourPackageById,
@@ -78,10 +79,15 @@ function ErrorState({ message, onRetry }) {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function TourDetailClientPage() {
   const { id } = useParams();
-  const { tourPackage, related, loading, error, refetch } =
+  const { tourPackage, related, isLoading, error, refetch } =
     usePageTourPackageById(id);
 
-  if (loading) return <TourSkeleton />;
+  if (isLoading)
+    return (
+      <Section>
+        <TourDetailSkeleton />
+      </Section>
+    );
   if (error) return <ErrorState message={error} onRetry={refetch} />;
   if (!tourPackage) return <ErrorState message="Tour package not found." />;
 

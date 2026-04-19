@@ -25,7 +25,7 @@ export default function HomePage() {
       <BannerWithFilter />
       <div
         style={{
-          marginTop: isMobile ? "270px" : "132px",
+          marginTop: isMobile ? "450px" : "132px",
           marginBottom: isMobile ? "70px" : "132px",
         }}
         className="px-3"

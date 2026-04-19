@@ -19,7 +19,7 @@ export default function VisaApplicationContent() {
   const [fareData, setFareData] = useState(null);
 
   useEffect(() => {
-    const stored = localStorage.getItem("visa_fare_data");
+    const stored = localStorage.getItem("visa_booking_data");
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setFareData(stored ? JSON.parse(stored) : null);
   }, []);
@@ -34,11 +34,11 @@ export default function VisaApplicationContent() {
     }
   }, [router, params]);
 
-  const structuredFare = fareData
+  const structuredFare = fareData?.fareData
     ? {
-        adult: { visa_fee: fareData.adult || 0, service_charge: 0 },
-        child: { visa_fee: fareData.child || 0, service_charge: 0 },
-        infant: { visa_fee: fareData.infant || 0, service_charge: 0 },
+        adult: { visa_fee: fareData.fareData.adult || 0, service_charge: 0 },
+        child: { visa_fee: fareData.fareData.child || 0, service_charge: 0 },
+        infant: { visa_fee: fareData.fareData.infant || 0, service_charge: 0 },
       }
     : {};
 
