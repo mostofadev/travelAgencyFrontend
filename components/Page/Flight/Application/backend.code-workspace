@@ -1,0 +1,18 @@
+{
+	"folders": [
+		{
+			"path": "../../../../../backend"
+		},
+		{
+			"path": "../../../.."
+		},
+		{
+			"path": "../../../../../requrement"
+		}
+	],
+	"settings": {
+		"cSpell.words": [
+			"aircrafts"
+		]
+	}
+}
