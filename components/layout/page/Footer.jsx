@@ -171,7 +171,7 @@ export default function Footer() {
                   icon: (
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z M12 7a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" />
                   ),
-                  text: "House 12, Road 5, Dhaka 1212, Bangladesh",
+                  text: "Zohura Complex (4th Floor),Churipotti, Naogaon Sadar -6500, Naogaon.",
                 },
                 {
                   icon: (
