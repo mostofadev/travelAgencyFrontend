@@ -47,7 +47,7 @@ export default function Navbar() {
           <Link href="/" className="flex items-center shrink-0">
             <Image
               src="/logo.png"
-              alt="TravelCo"
+              alt="goTripsbd"
               width={160}
               height={48}
               priority
@@ -112,11 +112,15 @@ export default function Navbar() {
           } flex flex-col`}
         >
           <div className="flex justify-between items-center px-6 py-4 border-b border-gray-200">
-            <Link
-              href="/"
-              className="text-2xl font-bold text-primary tracking-tight"
-            >
-              TravelCo
+            <Link href="/" className="flex items-center shrink-0">
+              <Image
+                src="/logo.png"
+                alt="gotripsbd"
+                width={160}
+                height={48}
+                priority
+                className="h-10 w-auto object-contain md:h-12"
+              />
             </Link>
             <button onClick={closeMenu} aria-label="Close menu" className="p-2">
               <span className="block w-6 h-0.5 bg-gray-700 rotate-45 translate-y-.5 transition-all duration-300"></span>
