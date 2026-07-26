@@ -21,8 +21,9 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
-//  SidebarContent 
+//  SidebarContent
 function SidebarContent({
   isMobile,
   navigation,
@@ -139,7 +140,19 @@ function SidebarContent({
           </div>
           <div>
             <h1 className="text-xl font-bold text-[#10172a] tracking-tight">
-              Wanderlust
+              <Link
+                href="/admin/dashboard"
+                className="flex items-center shrink-0"
+              >
+                <Image
+                  src="/logo.png"
+                  alt="TravelCo"
+                  width={160}
+                  height={48}
+                  priority
+                  className="h-10 w-auto object-contain md:h-12"
+                />
+              </Link>
             </h1>
             <p className="text-xs text-gray-500 font-medium">Travel Agency</p>
           </div>

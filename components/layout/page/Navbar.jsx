@@ -5,6 +5,7 @@ import Link from "next/link";
 import Section from "@/components/ui/Section";
 import Button from "@/components/ui/Button";
 import { jwtManager } from "@/lib/auth/jwt";
+import Image from "next/image";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -43,11 +44,15 @@ export default function Navbar() {
       <Section>
         <div className="flex items-center justify-between py-4 relative">
           {/* Logo */}
-          <Link
-            href="/"
-            className="text-2xl font-bold text-primary tracking-tight"
-          >
-            TravelCo
+          <Link href="/" className="flex items-center shrink-0">
+            <Image
+              src="/logo.png"
+              alt="TravelCo"
+              width={160}
+              height={48}
+              priority
+              className="h-10 w-auto object-contain md:h-12"
+            />
           </Link>
 
           {/* Desktop Menu */}

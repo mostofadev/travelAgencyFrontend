@@ -31,7 +31,6 @@ export default function FareSummary({
     },
   ];
 
-  // ✅ total calculation (dynamic)
   const total = types.reduce((sum, type) => {
     const price =
       (fareData[type.key]?.visa_fee || 0) +

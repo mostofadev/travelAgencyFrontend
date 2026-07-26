@@ -1,14 +1,13 @@
 "use client";
 
+import Image from "next/image";
 
-//  Footer Component 
+//  Footer Component
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
     <footer className="bg-primary text-white">
-      
-
       {/* ── Main Footer ── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
@@ -16,28 +15,22 @@ export default function Footer() {
           <div className="lg:col-span-1">
             {/* Logo */}
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-9 h-9 rounded-xl bg-[#0A5A70] flex items-center justify-center shadow-lg">
-                <svg
-                  className="w-5 h-5 text-white"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={1.8}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <circle cx="12" cy="12" r="10" />
-                  <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
-                </svg>
-              </div>
+              <Image
+                src="/logo2.svg"
+                alt="GoTripsBD"
+                width={36}
+                height={36}
+                className="w-9 h-9 rounded-xl bg-[#0A5A70] object-contain shadow-lg"
+              />
               <span className="text-white text-xl font-extrabold tracking-tight">
-                Triplo<span className="text-[#22d3ee]">om</span>
+                GoTrips<span className="text-[#22d3ee]">BD</span>
               </span>
             </div>
 
             <p className="text-white/50 text-sm leading-relaxed mb-6">
-              Curated travel experiences across Asia and beyond. We craft
-              journeys that leave lasting memories.
+              Your trusted travel partner for visa processing, flight
+              booking, and customized tour packages across Bangladesh and
+              beyond.
             </p>
 
             {/* Social Icons */}
@@ -119,11 +112,11 @@ export default function Footer() {
             <ul className="space-y-3">
               {[
                 { label: "Home", href: "/" },
-                { label: "Tour Packages", href: "/packages" },
-                { label: "Destinations", href: "/destinations" },
+                { label: "Visa", href: "/visa" },
+                { label: "Flight", href: "/flight" },
+                { label: "Tour Packages", href: "/tour" },
                 { label: "About Us", href: "/about" },
                 { label: "Contact", href: "/contact" },
-                { label: "Blog", href: "/blog" },
               ].map((link) => (
                 <li key={link.label}>
                   <a
@@ -145,12 +138,12 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3">
               {[
-                { label: "Japan", flag: "🇯🇵" },
                 { label: "Thailand", flag: "🇹🇭" },
-                { label: "Maldives", flag: "🇲🇻" },
-                { label: "Nepal", flag: "🇳🇵" },
                 { label: "Malaysia", flag: "🇲🇾" },
-                { label: "Philippines", flag: "🇵🇭" },
+                { label: "Nepal", flag: "🇳🇵" },
+                { label: "Maldives", flag: "🇲🇻" },
+                { label: "India", flag: "🇮🇳" },
+                { label: "Singapore", flag: "🇸🇬" },
               ].map((dest) => (
                 <li key={dest.label}>
                   <a
@@ -193,7 +186,7 @@ export default function Footer() {
                       <polyline points="22,6 12,13 2,6" />
                     </>
                   ),
-                  text: "hello@triploom.com",
+                  text: "hello@gotripsbd.com",
                 },
                 {
                   icon: (
@@ -231,7 +224,7 @@ export default function Footer() {
         {/* ── Divider ── */}
         <div className="mt-12 pt-6 border-t border-white/8 flex flex-col sm:flex-row items-center justify-between gap-3 text-center">
           <p className="text-white/30 text-xs">
-            © {currentYear} Triploom. All rights reserved.
+            © {currentYear} GoTripsBD. All rights reserved.
           </p>
           <div className="flex items-center gap-5">
             {["Privacy Policy", "Terms of Service", "Cookie Policy"].map(

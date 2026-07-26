@@ -1,9 +1,9 @@
-
 "use client";
 
 import { useRouter } from "next/navigation";
 import { CreditCard, Printer, X, Loader2 } from "lucide-react";
 import { useCancelFlightBooking } from "@/hooks/Page/useFlightBooking";
+import Button from "@/components/ui/Button";
 
 export default function BookingActions({ booking }) {
   const router = useRouter();
@@ -21,18 +21,12 @@ export default function BookingActions({ booking }) {
   return (
     <div className="flex flex-wrap gap-3">
       {!isPaid && !isCancelled && (
-        <button className="inline-flex items-center gap-2 flex-1 sm:flex-none justify-center bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-2xl transition-colors text-sm">
-          <CreditCard size={16} />
+        <Button
+          href={`/flight/checkout/${booking.booking_reference}?flight_class_id=${booking.flight_class?.id}&adults=${booking.passengers_count?.adults ?? 1}&children=${booking.passengers_count?.children ?? 0}&infants=${booking.passengers_count?.infants ?? 0}`}
+        >
           Pay Now
-        </button>
+        </Button>
       )}
-
-      <button className="inline-flex items-center gap-2 flex-1 sm:flex-none justify-center bg-white hover:bg-slate-50 text-slate-700 font-semibold px-6 py-3 rounded-2xl border border-slate-200 transition-colors text-sm">
-        <Printer size={16} />
-        Print Ticket
-      </button>
-
-    
     </div>
   );
 }

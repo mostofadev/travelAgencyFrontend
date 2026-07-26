@@ -20,6 +20,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useWalletBalance } from "@/hooks/Page/useWallet";
 import { useUserLogout } from "@/hooks/AuthUser";
 import { jwtManager } from "@/lib/auth/jwt";
+import Image from "next/image";
 
 const navigation = [
   { name: "Dashboard", icon: LayoutDashboard, href: "/user/dashboard" },
@@ -232,7 +233,19 @@ export default function UserLayoutContent({ children }) {
               </div>
               <div>
                 <h1 className="text-xl font-bold text-[#10172a] tracking-tight">
-                  Wanderlust
+                  <Link
+                    href="/user/dashboard"
+                    className="flex items-center shrink-0"
+                  >
+                    <Image
+                      src="/logo.png"
+                      alt="TravelCo"
+                      width={160}
+                      height={48}
+                      priority
+                      className="h-10 w-auto object-contain md:h-12"
+                    />
+                  </Link>
                 </h1>
                 <p className="text-xs text-gray-500 font-medium">
                   Travel Agency
@@ -290,7 +303,19 @@ export default function UserLayoutContent({ children }) {
                 </div>
                 <div>
                   <h1 className="text-xl font-bold text-[#10172a] tracking-tight">
-                    Wanderlust
+                    <Link
+                      href="/user/dashboard"
+                      className="flex items-center shrink-0"
+                    >
+                      <Image
+                        src="/logo.png"
+                        alt="TravelCo"
+                        width={160}
+                        height={48}
+                        priority
+                        className="h-10 w-auto object-contain md:h-12"
+                      />
+                    </Link>
                   </h1>
                   <p className="text-xs text-gray-500 font-medium">
                     Travel Agency
