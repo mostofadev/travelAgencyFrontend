@@ -177,7 +177,7 @@ export default function Footer() {
                   icon: (
                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6.29 6.29l.87-.87a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
                   ),
-                  text: "+880 1700-000000",
+                  text: "+88 01721-416010",
                 },
                 {
                   icon: (
@@ -186,7 +186,7 @@ export default function Footer() {
                       <polyline points="22,6 12,13 2,6" />
                     </>
                   ),
-                  text: "hello@gotripsbd.com",
+                  text: "gotripsbd@gmail.com",
                 },
                 {
                   icon: (
@@ -195,7 +195,7 @@ export default function Footer() {
                       <polyline points="12 6 12 12 16 14" />
                     </>
                   ),
-                  text: "Sat – Thu: 9:00 AM – 7:00 PM",
+                  text: "Sat - Thu: 9:00 AM - 8:00 PM",
                 },
               ].map((item, i) => (
                 <li key={i} className="flex items-start gap-3">
