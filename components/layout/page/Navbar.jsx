@@ -112,6 +112,7 @@ export default function Navbar() {
           } flex flex-col`}
         >
           <div className="flex justify-between items-center px-6 py-4 border-b border-gray-200">
+            
             <Link href="/" className="flex items-center shrink-0">
               <Image
                 src="/logo.png"
