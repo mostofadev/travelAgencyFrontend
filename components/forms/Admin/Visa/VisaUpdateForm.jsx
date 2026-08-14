@@ -31,7 +31,8 @@ function VisaUpdateForm({ visaId }) {
 
   // Fetch visa data
   const { data: visaData, isLoading: visaLoading } = useVisa(visaId);
-
+   console.log('visaSingleData',visaData);
+   
   // Fetch countries and visa types
   const { data: countriesData, isLoading: countriesLoading } =
     useVisaFormCountries();
@@ -50,6 +51,7 @@ function VisaUpdateForm({ visaId }) {
     defaultValues: {
       visa_title: "",
       country_id: "",
+      destination_country_id: "",
       visa_type_id: "",
       description: "",
       notes: "",
@@ -111,6 +113,9 @@ function VisaUpdateForm({ visaId }) {
         reset({
           visa_title: visa.visa_title || "",
           country_id: String(visa.country?.id || visa.country_id || ""),
+          destination_country_id: String(
+            visa.destination_country?.id || visa.destination_country_id || "",
+          ),
           visa_type_id: String(visa.visa_type?.id || visa.visa_type_id || ""),
           description: descriptionValue,
           notes: notesValue,
@@ -171,6 +176,7 @@ function VisaUpdateForm({ visaId }) {
       // Basic fields
       formData.append("visa_title", data.visa_title);
       formData.append("country_id", data.country_id);
+      formData.append("destination_country_id", data.destination_country_id); 
       formData.append("visa_type_id", data.visa_type_id);
       formData.append("description", data.description || "");
       formData.append("notes", data.notes || "");
@@ -359,6 +365,15 @@ function VisaUpdateForm({ visaId }) {
                   options={countryOptions}
                   {...register("country_id")}
                   error={errors.country_id?.message}
+                  disabled={countriesLoading}
+                />
+
+                <Select // ✅ এই ব্লক যোগ করো
+                  label="Destination Country"
+                  placeholder="Select country"
+                  options={countryOptions}
+                  {...register("destination_country_id")}
+                  error={errors.destination_country_id?.message}
                   disabled={countriesLoading}
                 />
 
@@ -670,7 +685,7 @@ function VisaUpdateForm({ visaId }) {
           </div>
 
           {/* Submit Buttons */}
-          <Button
+          {/* <Button
             type="submit"
             loading={isPending}
             disabled={isPending}
@@ -678,6 +693,14 @@ function VisaUpdateForm({ visaId }) {
             fullWidth
           >
             Update Visa
+          </Button> */}
+          <Button
+            type="submit"
+            size="lg"
+            loading={isPending}
+            disabled={isPending}
+          >
+            {isPending ? "Updating..." : "Update Visa"}
           </Button>
         </form>
       </div>
