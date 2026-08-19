@@ -49,7 +49,7 @@ export default function RootLayout({ children }) {
       >
         <QueryProvider>
           {children}
-          <ChatWidget />
+          {/* <ChatWidget /> */}
         </QueryProvider>
       </body>
     </html>
